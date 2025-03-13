@@ -36,7 +36,9 @@ const accounts = [account1, account2, account3, account4];
 // Elements
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
-const labelBalance = document.querySelector('.balance__value');
+const labelBalance = document.querySelector(
+  '.balance__value'
+) as HTMLParagraphElement;
 const labelSumIn = document.querySelector('.summary__value--in');
 const labelSumOut = document.querySelector('.summary__value--out');
 const labelSumInterest = document.querySelector('.summary__value--interest');
@@ -77,6 +79,12 @@ const displayMovements = function (movements: number[]) {
   });
 };
 
+const displayBalance = function (movements: number[]) {
+  const balance = movements.reduce((acc, cur) => acc + cur, 0);
+
+  labelBalance.textContent = `${balance} EUR`;
+};
+
 displayMovements(account1.movements);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -89,6 +97,7 @@ const currencies = new Map([
 ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+displayBalance(account1.movements);
 
 /////////////////////////////////////////////////
 // const arr = ['a', 'b', 'c', 'd', 'e', 'f'];
@@ -192,3 +201,28 @@ const generateUserCredentials = function (accounts: Account[]) {
 };
 generateUserCredentials(accounts);
 console.log(accounts);
+
+const deposits = movements.filter((mov) => mov > 0);
+console.log(deposits);
+
+const withdrawals = movements.filter((mov) => mov < 0);
+console.log(withdrawals);
+
+// Reduce method
+const balance = movements.reduce((acc, curr, i, arr) => {
+  console.log(acc, curr, i, arr);
+  return acc + curr;
+}, 0);
+
+// Doing the same using for-of loop
+let balance2 = 0;
+for (const mov of movements) balance2 += mov;
+console.log(balance2);
+console.log(balance);
+
+// Display max value from arr using reduce
+const maxValue = movements.reduce(
+  (acc, cur) => (acc > cur ? acc : cur),
+  movements[0]
+);
+console.log(maxValue);
