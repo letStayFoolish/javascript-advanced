@@ -4,31 +4,31 @@
 
 // Data
 const account1 = {
-    owner: 'Jonas Schmedtmann',
-    movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
-    interestRate: 1.2, // %
-    pin: 1111,
+  owner: 'Jonas Schmedtmann',
+  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  interestRate: 1.2, // %
+  pin: 1111,
 };
 
 const account2 = {
-    owner: 'Jessica Davis',
-    movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
-    interestRate: 1.5,
-    pin: 2222,
+  owner: 'Jessica Davis',
+  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  interestRate: 1.5,
+  pin: 2222,
 };
 
 const account3 = {
-    owner: 'Steven Thomas Williams',
-    movements: [200, -200, 340, -300, -20, 50, 400, -460],
-    interestRate: 0.7,
-    pin: 3333,
+  owner: 'Steven Thomas Williams',
+  movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  interestRate: 0.7,
+  pin: 3333,
 };
 
 const account4 = {
-    owner: 'Sarah Smith',
-    movements: [430, 1000, 700, 50, 90],
-    interestRate: 1,
-    pin: 4444,
+  owner: 'Sarah Smith',
+  movements: [430, 1000, 700, 50, 90],
+  interestRate: 1,
+  pin: 4444,
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -43,7 +43,9 @@ const labelSumInterest = document.querySelector('.summary__value--interest');
 const labelTimer = document.querySelector('.timer');
 
 const containerApp = document.querySelector('.app');
-const containerMovements = document.querySelector('.movements') as HTMLDivElement;
+const containerMovements = document.querySelector(
+  '.movements'
+) as HTMLDivElement;
 
 const btnLogin = document.querySelector('.login__btn');
 const btnTransfer = document.querySelector('.form__btn--transfer');
@@ -59,32 +61,31 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-
 const displayMovements = function (movements: number[]) {
-    containerMovements.innerHTML = ''; // textContent returns only text itself, while on the other hand innerHTML returns everything including html itself
+  containerMovements.innerHTML = ''; // textContent returns only text itself, while on the other hand innerHTML returns everything including html itself
 
-    return movements.forEach((movement, index) => {
-        const type = movement > 0 ? 'deposit' : 'withdrawal';
-        const html = `
+  return movements.forEach((movement, index) => {
+    const type = movement > 0 ? 'deposit' : 'withdrawal';
+    const html = `
         <div class="movements__row">
             <div class="movements__type movements__type--${type}">${index + 1} ${type}</div>
 <!--            <div class="movements__date">3 days ago</div>-->
             <div class="movements__value">${movement}€</div>
-        </div>`
+        </div>`;
 
-        containerMovements.insertAdjacentHTML('afterbegin', html)
-    })
-}
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
 
-displayMovements(account1.movements)
+displayMovements(account1.movements);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
 const currencies = new Map([
-    ['USD', 'United States dollar'],
-    ['EUR', 'Euro'],
-    ['GBP', 'Pound sterling'],
+  ['USD', 'United States dollar'],
+  ['EUR', 'Euro'],
+  ['GBP', 'Pound sterling'],
 ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
@@ -130,3 +131,35 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // uniqueArr.forEach((value, _, map) => {
 //   console.log(`${_}: ${value}`);
 // });
+
+// Coding Challenge #1
+/**
+ * One array for each study (dog owner)
+ * Dog is an adult if it is at least 3 years old, and it is puppy if it is less than 3 years old.
+ * create function `checkDogs`, which accepts two arrays of dog ages (`dogsJulia` and `dogsKate`)
+ *
+ */
+
+const juliaDogs: number[] = [3, 5, 2, 12, 7];
+const kateDogs: number[] = [4, 1, 15, 8, 3];
+
+const checkDogs: (juliaDogs: number[], kateDogs: number[]) => void = function (
+  juliaDogs,
+  kateDogs
+) {
+  const juliaDogsCorrected = juliaDogs.slice(1, -2);
+
+  const dogsArr = [...juliaDogsCorrected, ...kateDogs]; // corected Julia's dogs and Kate's dogs
+
+  dogsArr.forEach((dog, index) => {
+    if (dog < 3) {
+      console.log(`Dog number ${index + 1} is still a puppy`);
+    } else {
+      console.log(
+        `Dog number ${index + 1} is an adult, and it is ${dog} years old`
+      );
+    }
+  });
+};
+
+checkDogs(juliaDogs, kateDogs);
