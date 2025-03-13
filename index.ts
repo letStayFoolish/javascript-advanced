@@ -163,3 +163,32 @@ const checkDogs: (juliaDogs: number[], kateDogs: number[]) => void = function (
 };
 
 checkDogs(juliaDogs, kateDogs);
+const movementsDescription = movements.map(
+  (mov, i, arr) =>
+    `Movement ${i + 1}: You ${mov > 0 ? 'deposited' : 'withdrew'} ${Math.abs(mov)}`
+);
+
+console.log(movementsDescription);
+/**
+ * `forEach` gives us possibility to do something with an existing array, `map` on the other hand - returns a **new array** containing
+ * the results of applying an operation on all original array elements.
+ */
+type Account = {
+  owner: string;
+  movements: number[];
+  interestRate: number;
+  pin: number;
+  username?: string;
+};
+const generateUserCredentials = function (accounts: Account[]) {
+  // split returns new array
+  accounts.forEach((account) => {
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map((word) => word[0])
+      .join('');
+  });
+};
+generateUserCredentials(accounts);
+console.log(accounts);
