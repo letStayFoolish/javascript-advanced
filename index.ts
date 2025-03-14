@@ -210,7 +210,7 @@ const movementsDescription = movements.map(
     `Movement ${i + 1}: You ${mov > 0 ? 'deposited' : 'withdrew'} ${Math.abs(mov)}`
 );
 
-console.log(movementsDescription);
+// console.log(movementsDescription);
 /**
  * `forEach` gives us possibility to do something with an existing array, `map` on the other hand - returns a **new array** containing
  * the results of applying an operation on all original array elements.
@@ -233,13 +233,13 @@ const generateUserCredentials = function (accounts: Account[]) {
   });
 };
 generateUserCredentials(accounts);
-console.log(accounts);
+// console.log(accounts);
 
 const deposits = movements.filter((mov) => mov > 0);
-console.log(deposits);
+// console.log(deposits);
 
 const withdrawals = movements.filter((mov) => mov < 0);
-console.log(withdrawals);
+// console.log(withdrawals);
 
 // Reduce method
 const balance = movements.reduce((acc, curr, i, arr) => {
@@ -250,15 +250,15 @@ const balance = movements.reduce((acc, curr, i, arr) => {
 // Doing the same using for-of loop
 let balance2 = 0;
 for (const mov of movements) balance2 += mov;
-console.log(balance2);
-console.log(balance);
+// console.log(balance2);
+// console.log(balance);
 
 // Display max value from arr using reduce
 const maxValue = movements.reduce(
   (acc, cur) => (acc > cur ? acc : cur),
   movements[0]
 );
-console.log(maxValue);
+// console.log(maxValue);
 
 // Coding challenge #2
 const calcAvgHumanAge = function (ages: number[]) {
@@ -279,5 +279,30 @@ const calcAvgHumanAge = function (ages: number[]) {
   return Math.ceil(avgHumanAge);
 };
 
-console.log(calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3]));
-console.log(calcAvgHumanAge([16, 6, 10, 5, 6, 1, 4]));
+// console.log(calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3]));
+// console.log(calcAvgHumanAge([16, 6, 10, 5, 6, 1, 4]));
+
+// Coding Challenge #3
+/**
+ * Rewrite `calcAvgHumanAge` function using arrow-function and chaining
+ */
+const calcAvgHumanAgeArrow = (ages: number[]) => {
+  /**
+   *   const avgHumanAge = ages
+   *     // 1. calc the dog age in human age:
+   *     .map((age) => (age <= 2 ? age * 2 : 16 + age * 4))
+   *     // 2. Exclude all dogs that are less than 18 human years old:
+   *     .filter((age) => age >= 18)
+   *     // 3. Calc the average human age of all adult dogs:
+   *     .reduce((acc, adultAge, i, arr) => acc + adultAge / arr.length, 0);
+   */
+  const avgHumanAge = ages
+    .map((age) => (age <= 2 ? age * 2 : 16 + age * 4))
+    .filter((age) => age >= 18)
+    .reduce((acc, adultAge, i, arr) => acc + adultAge / arr.length, 0);
+
+  return Math.ceil(avgHumanAge);
+};
+
+console.log(calcAvgHumanAgeArrow([5, 2, 4, 1, 15, 8, 3]));
+console.log(calcAvgHumanAgeArrow([16, 6, 10, 5, 6, 1, 4]));
