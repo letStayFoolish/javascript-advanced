@@ -39,9 +39,15 @@ const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector(
   '.balance__value'
 ) as HTMLParagraphElement;
-const labelSumIn = document.querySelector('.summary__value--in');
-const labelSumOut = document.querySelector('.summary__value--out');
-const labelSumInterest = document.querySelector('.summary__value--interest');
+const labelSumIn = document.querySelector(
+  '.summary__value--in'
+) as HTMLParagraphElement;
+const labelSumOut = document.querySelector(
+  '.summary__value--out'
+) as HTMLParagraphElement;
+const labelSumInterest = document.querySelector(
+  '.summary__value--interest'
+) as HTMLParagraphElement;
 const labelTimer = document.querySelector('.timer');
 
 const containerApp = document.querySelector('.app');
@@ -82,10 +88,37 @@ const displayMovements = function (movements: number[]) {
 const displayBalance = function (movements: number[]) {
   const balance = movements.reduce((acc, cur) => acc + cur, 0);
 
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance} €`;
+};
+
+const displaySummary = function (movements: number[]) {
+  labelSumIn.textContent = '';
+  labelSumOut.textContent = '';
+  labelSumInterest.textContent = '';
+
+  const income = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, cur) => acc + cur, 0);
+
+  const outcome = movements
+    .filter((mov) => mov < 0)
+    .reduce((acc, cur) => acc + cur, 0);
+
+  const interestRate = 1.2; // in %;
+  const interestValue = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, deposit) => {
+      const interestValue = deposit * (interestRate / 100);
+      return interestValue > 1 ? acc + interestValue : acc;
+    }, 0);
+
+  labelSumIn.textContent = `${income}€`;
+  labelSumOut.textContent = `${Math.abs(outcome)}€`;
+  labelSumInterest.textContent = `${interestValue}€`;
 };
 
 displayMovements(account1.movements);
+displaySummary(account1.movements);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
