@@ -31,10 +31,10 @@ const account4 = {
   pin: 4444,
 };
 
-const accounts = [account1, account2, account3, account4];
+const accounts: Account[] = [account1, account2, account3, account4];
 
 // Elements
-const labelWelcome = document.querySelector('.welcome');
+const labelWelcome = document.querySelector('.welcome') as HTMLParagraphElement;
 const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector(
   '.balance__value'
@@ -50,24 +50,39 @@ const labelSumInterest = document.querySelector(
 ) as HTMLParagraphElement;
 const labelTimer = document.querySelector('.timer');
 
-const containerApp = document.querySelector('.app');
+const containerApp = document.querySelector('.app') as HTMLElement;
 const containerMovements = document.querySelector(
   '.movements'
 ) as HTMLDivElement;
 
-const btnLogin = document.querySelector('.login__btn');
+const btnLogin = document.querySelector('.login__btn') as HTMLButtonElement;
 const btnTransfer = document.querySelector('.form__btn--transfer');
 const btnLoan = document.querySelector('.form__btn--loan');
 const btnClose = document.querySelector('.form__btn--close');
 const btnSort = document.querySelector('.btn--sort');
 
-const inputLoginUsername = document.querySelector('.login__input--user');
-const inputLoginPin = document.querySelector('.login__input--pin');
-const inputTransferTo = document.querySelector('.form__input--to');
-const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputLoanAmount = document.querySelector('.form__input--loan-amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
-const inputClosePin = document.querySelector('.form__input--pin');
+const loginForm = document.querySelector('.login') as HTMLFormElement;
+const inputLoginUsername = document.querySelector(
+  '.login__input--user'
+) as HTMLInputElement;
+const inputLoginPin = document.querySelector(
+  '.login__input--pin'
+) as HTMLInputElement;
+const inputTransferTo = document.querySelector(
+  '.form__input--to'
+) as HTMLInputElement;
+const inputTransferAmount = document.querySelector(
+  '.form__input--amount'
+) as HTMLInputElement;
+const inputLoanAmount = document.querySelector(
+  '.form__input--loan-amount'
+) as HTMLInputElement;
+const inputCloseUsername = document.querySelector(
+  '.form__input--user'
+) as HTMLInputElement;
+const inputClosePin = document.querySelector(
+  '.form__input--pin'
+) as HTMLInputElement;
 
 const displayMovements = function (movements: number[]) {
   containerMovements.innerHTML = ''; // textContent returns only text itself, while on the other hand innerHTML returns everything including html itself
@@ -91,7 +106,7 @@ const displayBalance = function (movements: number[]) {
   labelBalance.textContent = `${balance} €`;
 };
 
-const displaySummary = function (movements: number[]) {
+const displaySummary = function (movements: number[], interestRate: number) {
   labelSumIn.textContent = '';
   labelSumOut.textContent = '';
   labelSumInterest.textContent = '';
@@ -104,7 +119,6 @@ const displaySummary = function (movements: number[]) {
     .filter((mov) => mov < 0)
     .reduce((acc, cur) => acc + cur, 0);
 
-  const interestRate = 1.2; // in %;
   const interestValue = movements
     .filter((mov) => mov > 0)
     .reduce((acc, deposit) => {
@@ -117,8 +131,40 @@ const displaySummary = function (movements: number[]) {
   labelSumInterest.textContent = `${interestValue}€`;
 };
 
-displayMovements(account1.movements);
-displaySummary(account1.movements);
+let currentAccount;
+containerApp.style.opacity = '0';
+
+const login = function (e: any) {
+  e.preventDefault();
+
+  currentAccount = accounts?.find(
+    (account) => account?.username === inputLoginUsername.value
+  );
+
+  if (!currentAccount) {
+    inputLoginUsername.value = '';
+    console.warn('Wrong username');
+    return;
+  }
+  if (currentAccount?.pin !== Number(inputLoginPin.value)) {
+    inputLoginPin.value = '';
+    console.warn('Wrong pin');
+    return;
+  }
+
+  inputLoginPin.blur();
+  inputLoginPin.value = inputLoginUsername.value = '';
+  containerApp.style.opacity = '100';
+  labelWelcome.textContent = `Welcome ${currentAccount?.owner}`;
+
+  displayMovements(currentAccount.movements);
+  displayBalance(currentAccount.movements);
+  displaySummary(currentAccount.movements, currentAccount.interestRate);
+};
+
+btnLogin.setAttribute('type', 'submit');
+loginForm.addEventListener('submit', login);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -304,5 +350,21 @@ const calcAvgHumanAgeArrow = (ages: number[]) => {
   return Math.ceil(avgHumanAge);
 };
 
-console.log(calcAvgHumanAgeArrow([5, 2, 4, 1, 15, 8, 3]));
-console.log(calcAvgHumanAgeArrow([16, 6, 10, 5, 6, 1, 4]));
+// console.log(calcAvgHumanAgeArrow([5, 2, 4, 1, 15, 8, 3])); // 44
+// console.log(calcAvgHumanAgeArrow([16, 6, 10, 5, 6, 1, 4])); // 48
+
+// Method .find() will return first item which satisfied the condition. Find returns element itself NOT array.
+const jessicaAccount = accounts.find((acc) => acc.username === 'jd');
+
+console.log(jessicaAccount);
+
+// Doing the same using for-of loop
+let foundAcc;
+for (const account of accounts) {
+  if (account.username === 'jd') {
+    foundAcc = account;
+    break;
+  }
+}
+
+console.log(foundAcc);
