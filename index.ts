@@ -59,7 +59,7 @@ const btnLogin = document.querySelector('.login__btn') as HTMLButtonElement;
 const btnTransfer = document.querySelector('.form__btn--transfer');
 const btnLoan = document.querySelector('.form__btn--loan') as HTMLButtonElement;
 const btnClose = document.querySelector('.form__btn--close');
-const btnSort = document.querySelector('.btn--sort');
+const btnSort = document.querySelector('.btn--sort') as HTMLButtonElement;
 
 const loginForm = document.querySelector('.login') as HTMLFormElement;
 const inputLoginUsername = document.querySelector(
@@ -84,10 +84,12 @@ const inputClosePin = document.querySelector(
   '.form__input--pin'
 ) as HTMLInputElement;
 
-const displayMovements = function (movements: number[]) {
+const displayMovements = function (movements: number[], sort: boolean = false) {
   containerMovements.innerHTML = ''; // textContent returns only text itself, while on the other hand innerHTML returns everything including html itself
 
-  return movements.forEach((movement, index) => {
+  const movs = sort ? [...movements].sort((a, b) => a - b) : movements;
+
+  return movs.forEach((movement, index) => {
     const type = movement > 0 ? 'deposit' : 'withdrawal';
     const html = `
         <div class="movements__row">
@@ -186,6 +188,13 @@ btnLoan.addEventListener('click', function (e: any) {
 
   updateUI(currentAccount);
   inputLoanAmount.value = '';
+});
+
+let isSorting = false;
+btnSort.addEventListener('click', () => {
+  displayMovements(currentAccount.movements, !isSorting);
+
+  isSorting = !isSorting;
 });
 
 /////////////////////////////////////////////////
@@ -291,6 +300,7 @@ type Account = {
   pin: number;
   username?: string;
 };
+
 const generateUserCredentials = function (accounts: Account[]) {
   // split returns new array
   accounts.forEach((account) => {
@@ -402,3 +412,44 @@ console.log(movements.includes(100)); // with some it would be like: movements.s
 // Every is similar but to return true, it requests that all elements within array are satisfying condition
 console.log(account1.movements.every((mov) => mov > 0));
 console.log(account4.movements.every((mov) => mov > 0));
+
+// NESTED ARRAYS
+// Working with `flat` map nested arrays:
+const accountMovements = accounts.map((acc) => acc.movements);
+console.log({ accountMovements });
+const allMovements: number[] = accountMovements.flat(); // argument - pass the level of how deep we want to go through the nesting elements
+
+const overallBalance = allMovements.reduce(
+  (acc, movement) => acc + movement,
+  0
+);
+console.log(overallBalance);
+
+// If we need to go ONLY ONE level deep we can use flatMap:
+const overallBalance2 = accounts
+  .flatMap((account) => account.movements)
+  .reduce((acc, movement) => acc + movement, 0);
+
+console.log({ overallBalance2 });
+
+// SORTING (is mutating the original array)
+const nameList = [
+  'John',
+  'Abraham',
+  'Peter',
+  'Mary',
+  'Zara',
+  'Jessica',
+  'Jessica',
+];
+console.log(nameList.sort());
+console.log(nameList);
+
+const unsortedNumbers = [1, 66, -77, 90, 643, 999];
+// a and b are comparing items, if we are returning a negative value ( < 0 ) then we are putting an `a` before `b`, if we are returning grater than 0 ( > 0 ), then we are returning `b` before `a`.
+// `a` is current value, and `b` is next value;
+// < 0 => A, B
+// > 0 => B, A
+const sortedNumbers = unsortedNumbers.sort((a, b) => b - a);
+console.log(sortedNumbers);
+console.log(unsortedNumbers);
