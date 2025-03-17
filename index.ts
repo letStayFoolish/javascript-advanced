@@ -453,3 +453,16 @@ const unsortedNumbers = [1, 66, -77, 90, 643, 999];
 const sortedNumbers = unsortedNumbers.sort((a, b) => b - a);
 console.log(sortedNumbers);
 console.log(unsortedNumbers);
+
+// Create an array programmatically
+
+const newArr = Array.from({ length: 7 }, (_, i) => i + 1);
+// const newArr = Array.from({ length: 7 }, (curr, i) => i + 1);
+console.log(newArr);
+
+// Array of 100 dice rolls
+const randomDiceRolls = Array.from({ length: 100 }, () =>
+  Math.trunc(Math.random() * 6 + 1)
+);
+
+console.log({ randomDiceRolls });
