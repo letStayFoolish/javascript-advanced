@@ -57,7 +57,7 @@ const containerMovements = document.querySelector(
 
 const btnLogin = document.querySelector('.login__btn') as HTMLButtonElement;
 const btnTransfer = document.querySelector('.form__btn--transfer');
-const btnLoan = document.querySelector('.form__btn--loan');
+const btnLoan = document.querySelector('.form__btn--loan') as HTMLButtonElement;
 const btnClose = document.querySelector('.form__btn--close');
 const btnSort = document.querySelector('.btn--sort');
 
@@ -131,7 +131,13 @@ const displaySummary = function (movements: number[], interestRate: number) {
   labelSumInterest.textContent = `${interestValue}€`;
 };
 
-let currentAccount;
+const updateUI = function (account: Account) {
+  displaySummary(account.movements, account.interestRate);
+  displayBalance(account.movements);
+  displayMovements(account.movements);
+};
+
+let currentAccount: Account;
 containerApp.style.opacity = '0';
 
 const login = function (e: any) {
@@ -139,7 +145,7 @@ const login = function (e: any) {
 
   currentAccount = accounts?.find(
     (account) => account?.username === inputLoginUsername.value
-  );
+  ) as Account;
 
   if (!currentAccount) {
     inputLoginUsername.value = '';
@@ -164,6 +170,23 @@ const login = function (e: any) {
 
 btnLogin.setAttribute('type', 'submit');
 loginForm.addEventListener('submit', login);
+
+btnLoan.addEventListener('click', function (e: any) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((mov) => mov >= amount * 0.1)
+  ) {
+    // do something
+    currentAccount.movements.push(amount);
+  }
+
+  updateUI(currentAccount);
+  inputLoanAmount.value = '';
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -368,3 +391,14 @@ for (const account of accounts) {
 }
 
 console.log(foundAcc);
+
+// some and includes are similar
+// some we use for cases when we have condition like:
+console.log(movements.some((mov) => mov > 0)); // returns boolean
+
+// includes we use for equality
+console.log(movements.includes(100)); // with some it would be like: movements.some(mov => mov === 100);
+
+// Every is similar but to return true, it requests that all elements within array are satisfying condition
+console.log(account1.movements.every((mov) => mov > 0));
+console.log(account4.movements.every((mov) => mov > 0));
