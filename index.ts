@@ -58,3 +58,11 @@ const header = document.querySelector(".header") as HTMLDivElement;
 // header.prepend(message); // add as a first child
 // if we use prepend and then after it, we insert it using append -> we actually moved the inserted element. Element got inserted only once, any action coming next will actually move element.
 header.append(message); // add as a last child
+// header.prepend(message.cloneNode(true));
+// header.before(message);
+// header.after(message);
+
+// Delete elements
+(document.querySelector(".btn--close-cookie") as HTMLButtonElement).addEventListener("click", function () {
+    message.remove();
+});
