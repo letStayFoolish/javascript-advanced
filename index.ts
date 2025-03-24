@@ -109,3 +109,55 @@ scrollBtn.addEventListener("click", function () {
         behavior: "smooth",
     })
 })
+
+// Capturing vs Bubbling
+const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
+
+const randomColor = () => `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`
+
+const navLink = document.querySelector(".nav__link") as HTMLAnchorElement;
+const navLinks = document.querySelector(".nav__links") as HTMLUListElement;
+const nav = document.querySelector(".nav") as HTMLElement;
+
+/**
+ * By default, `addEventListener` is listening for a bubbling events, and NOT capturing events.
+ * If we want to catch events during the CAPTURING phase instead, we simply add third parameter -> true
+ * With this we are listening for events going down from the DOM tree...
+ * Capturing: from the document root all the way down to the target;
+ *
+ *
+ * DEFAULT:
+ * Receive events from target elements and from BUBBLING phase.
+ *
+ * When third parameter is set to true (element.addEventListener("click", (e) => {}, true)), that means:
+ * Element is now listening for the event as it travels down from the DOW, while other ones (default behaviour)
+ * are listening for the event as it travels back up -> they are looking for bubbling events, that's why they gonna happen after
+ *
+ * navLinks.addEventListener("click", function (e) {
+ *     this.style.backgroundColor = randomColor();
+ *     // console.log("NAV LINKS EVENT: ", e.target)// will log the element where CLICK (EVENT) happened -> bubbling
+ *     console.log("NAV LINKS EVENT: ", e.target, e.currentTarget)
+ *     console.log(this === e.currentTarget) // always returns true!
+ * }, true);
+ */
+navLink.addEventListener("click", function (e) {
+    this.style.backgroundColor = randomColor();
+    // console.log("LINK EVENT: ", e.target) // will log the element where CLICK (EVENT) happened -> bubbling
+    console.log("LINK EVENT: ", e.target, e.currentTarget)
+
+    // Stop propagation
+    // e.stopPropagation()
+});
+
+navLinks.addEventListener("click", function (e) {
+    this.style.backgroundColor = randomColor();
+    // console.log("NAV LINKS EVENT: ", e.target)// will log the element where CLICK (EVENT) happened -> bubbling
+    console.log("NAV LINKS EVENT: ", e.target, e.currentTarget)
+    console.log(this === e.currentTarget) // always returns true!
+});
+
+nav.addEventListener("click", function (e) {
+    this.style.backgroundColor = randomColor();
+    // console.log("NAV EVENT: ", e.target)// will log the element where CLICK (EVENT) happened -> bubbling
+    console.log("NAV EVENT: ", e.target, e.currentTarget)
+});

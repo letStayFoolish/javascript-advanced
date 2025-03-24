@@ -30,3 +30,11 @@ JS <-- DOM (interface) --> BROWSER
 Any HTMLElement will have access to `.addEvenetListener()`, `.cloneNode()` or `.closest()` methods.
 ![js-dom-screen-01.png](js-dom-screen-01.png)
 
+## Capturing vs Bubbling
+
+**Capturing phase** event traveling down from the DOM.
+
+**Bubbling phase** event is traveling back up.
+
+![bubbling-screen.png](bubbling-screen.png)
+
