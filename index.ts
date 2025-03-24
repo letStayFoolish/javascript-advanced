@@ -1,5 +1,3 @@
-'use strict';
-
 ///////////////////////////////////////
 // Modal window
 
@@ -66,3 +64,28 @@ header.append(message); // add as a last child
 (document.querySelector(".btn--close-cookie") as HTMLButtonElement).addEventListener("click", function () {
     message.remove();
 });
+
+// Styles
+// Inline styles
+message.style.backgroundColor = "#37383d"
+message.style.width = "120%"
+
+console.log(getComputedStyle(message));
+console.log(getComputedStyle(message).color);
+
+document.documentElement.style.setProperty("--color-primary", "orangered")
+
+// Attributes
+const logo = document.querySelector(".nav__logo") as HTMLImageElement;
+console.log(logo.src); // returns absolute path
+console.log(logo.getAttribute("src")); // returns relative path to the folder where it belongs
+console.log(logo.alt);
+
+// Classes methods
+logo.classList.add("c", "j");
+logo.classList.remove("c", "j");
+logo.classList.toggle("c");
+logo.classList.contains("c");
+
+// Don't use:
+// logo.classList = "class-name" // this will override all other classes
