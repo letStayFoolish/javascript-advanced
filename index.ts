@@ -73,7 +73,7 @@ message.style.width = "120%"
 console.log(getComputedStyle(message));
 console.log(getComputedStyle(message).color);
 
-document.documentElement.style.setProperty("--color-primary", "orangered")
+// document.documentElement.style.setProperty("--color-primary", "orangered")
 
 // Attributes
 const logo = document.querySelector(".nav__logo") as HTMLImageElement;
@@ -89,3 +89,23 @@ logo.classList.contains("c");
 
 // Don't use:
 // logo.classList = "class-name" // this will override all other classes
+
+// Scrolling animation
+const scrollBtn = document.querySelector(".btn--scroll-to") as HTMLButtonElement;
+const section1 = document.getElementById("section--1") as HTMLElement;
+
+scrollBtn.addEventListener("click", function () {
+    const s1coords = section1.getBoundingClientRect();
+
+    // Old way to scroll
+    // window.scrollTo({
+    //     left: s1coords.left + window.scrollX,
+    //     top: s1coords.top + window.scrollY,
+    //     behavior: "smooth"
+    // })
+
+    // Modern way:
+    section1.scrollIntoView({
+        behavior: "smooth",
+    })
+})
