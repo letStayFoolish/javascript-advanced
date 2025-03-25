@@ -92,6 +92,25 @@ navLinks.addEventListener("click", function (e) {
         });
     }
 });
+
+// Tabbed Component
+const tabs = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container") as HTMLDivElement;
+tabsContainer.addEventListener("click", function (e) {
+
+    const clicked = (e.target as HTMLElement).closest(".operations__tab") as HTMLButtonElement;
+
+    // Guard
+    if (!clicked) return;
+
+    tabs.forEach(tab => tab.classList.remove("operations__tab--active"));
+    clicked.classList.add("operations__tab--active");
+
+    // Activate content area:
+    document.querySelectorAll(".operations__content").forEach(div => div.classList.remove("operations__content--active"));
+    (document.querySelector(`.operations__content--${clicked.dataset.tab}`) as HTMLDivElement).classList.add("operations__content--active");
+})
+
 ///////////////////////////////////////
 // Practice
 
