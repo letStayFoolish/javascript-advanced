@@ -74,15 +74,23 @@ scrollBtn.addEventListener("click", function () {
 navLinks.addEventListener("click", function (e) {
     e.preventDefault();
 
-    const id = (e.target as HTMLElement).getAttribute("href");
+    // One way to do it
+    // const id = (e.target as HTMLElement).getAttribute("href");
+    // if (!id || !id.includes("#section--")) return;
+    // const selectedSection = document.querySelector(id as string) as HTMLAnchorElement;
+    // selectedSection.scrollIntoView({
+    //     behavior: "smooth",
+    // });
+    ////////////////////////////////////
 
-    if (!id || !id.includes("#section--")) return;
-
-    const selectedSection = document.querySelector(id as string) as HTMLAnchorElement;
-
-    selectedSection.scrollIntoView({
-        behavior: "smooth",
-    });
+    // Second way to do it
+    if ((e.target as HTMLElement).classList.contains("nav__link")) {
+        const id = (e.target as HTMLElement).getAttribute("href");
+        const selectedSection = document.querySelector(id as string) as HTMLAnchorElement;
+        selectedSection.scrollIntoView({
+            behavior: "smooth",
+        });
+    }
 });
 ///////////////////////////////////////
 // Practice
