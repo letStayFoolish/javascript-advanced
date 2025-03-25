@@ -91,4 +91,51 @@ nav.addEventListener("click", function (e) {
 });
 ```
 
+## DOM traversing
+
+### Going downwards: children
+
+```ts
+const h1 = document.querySelector('h1');
+
+element.childNodes;
+element.children;
+element.firstElementChild;
+element.lastElementChild;
+console.log(h1.childNodes);
+console.log(h1.children);
+
+h1.firstElementChild.style.color = "orangered";
+h1.lastElementChild.style.color = "blue";
+
+```
+
+### Going upwards: parent
+
+```ts
+element.parentNode;
+element.parentElement;
+element.closest("tag-name");
+
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+(h1.closest(".header") as HTMLHeadingElement).style.backgroundColor = "var(--color-primary-opacity)";
+```
+
+### Going sideways: siblings
+
+```ts
+element.previousElementSibling;
+element.nextElementSibling;
+element.previousSibling;
+element.nextSibling
+
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+```
+
 

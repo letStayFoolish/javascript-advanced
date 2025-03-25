@@ -177,3 +177,30 @@ const randomColor = () => `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${ran
 //     // console.log("NAV EVENT: ", e.target)// will log the element where CLICK (EVENT) happened -> bubbling
 //     console.log("NAV EVENT: ", e.target, e.currentTarget)
 // });
+
+// DOM traversing
+const h1 = document.querySelector('h1') as HTMLHeadingElement;
+
+// Going downwards: children
+// element.childNodes; element.children; element.firstElementChild; element.lastElementChild;
+// console.log(h1.childNodes);
+// console.log(h1.children);
+
+// (h1.firstElementChild as HTMLSpanElement).style.color = "orangered";
+// (h1.lastElementChild as HTMLSpanElement).style.color = "blue";
+
+// Going upwards: parent
+// element.parentNode; element.parentElement; element.closest("tag-name");
+// console.log(h1.parentNode);
+
+// console.log(h1.parentElement);
+
+// (h1.closest(".header") as HTMLHeadingElement).style.backgroundColor = "var(--color-primary-opacity)";
+
+// Going sideways: siblings
+// element.previousElementSibling; element.nextElementSibling; element.previousSibling; element.nextSibling
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
+
+// console.log(h1.previousSibling);
+// console.log(h1.nextSibling);
