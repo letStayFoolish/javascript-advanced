@@ -111,6 +111,29 @@ tabsContainer.addEventListener("click", function (e) {
     (document.querySelector(`.operations__content--${clicked.dataset.tab}`) as HTMLDivElement).classList.add("operations__content--active");
 })
 
+// Menu fade animation
+const handleHover = function (event: MouseEvent, opacity: string) {
+    if ((event.target as HTMLElement).classList.contains("nav__link")) {
+        const link = event.target as HTMLElement;
+        const siblings = (link.closest('.nav') as HTMLElement).querySelectorAll('.nav__link');
+        const logo = (link.closest('.nav') as HTMLElement).querySelector("img") as HTMLImageElement;
+
+        siblings.forEach(el => {
+            if (el !== link) (el as HTMLElement).style.opacity = opacity;
+
+        })
+        logo.style.opacity = opacity;
+    }
+}
+
+// `bind()`-method creates a copy of the function that is called on, and it will set this-keyword in this function call to whatever value we pass to bind.
+nav.addEventListener("mouseover", function (e) {
+    handleHover(e, "0.5")
+});
+nav.addEventListener("mouseout", function (e) {
+    handleHover(e, "1")
+});
+
 ///////////////////////////////////////
 // Practice
 
