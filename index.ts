@@ -134,17 +134,57 @@ nav.addEventListener("mouseout", function (e) {
     handleHover(e, "1")
 });
 
-const sectionTop = section1.getBoundingClientRect().top;
+// const sectionTop = section1.getBoundingClientRect().top;
 // Sticky header on scroll
 // using scroll event -> very bed for performance!
-window.addEventListener("scroll", function (e) {
-    if (window.scrollY > sectionTop) {
+// window.addEventListener("scroll", function (e) {
+//     if (window.scrollY > sectionTop) {
+//         nav.classList.add("sticky");
+//     } else {
+//         nav.classList.remove("sticky");
+//     }
+//
+// });
+
+// Sticky navigation: Intersection Observer API
+// callback
+//                        threshold values number[], observer new IntersectionObserver
+// function observerCallback(entries: number[], observer: IntersectionObserver) {
+//     entries.forEach(entry => {
+//             console.log(entry);
+//         }
+//     )
+// }
+
+// options obj
+// const observerOptions = {
+//     root: null,
+//     threshold: [0, 0.2], // value 0 means that our callback will be triggered each time that the target element leaves the viewport completely, or enters the viewport.
+//     // rootMargin: "0px",
+// };
+// const observer = new IntersectionObserver(observerCallback, observerOptions);
+// observer.observe(section1);
+
+const headerCallback = function (entries: any) {
+    const [entry] = entries;
+
+    if (!entry.isIntersecting) {
+        // if (entry.intersectionRatio === 0) {
         nav.classList.add("sticky");
     } else {
         nav.classList.remove("sticky");
     }
+}
 
-});
+const navHeight = nav.getBoundingClientRect().height;
+
+const headerObserver = new IntersectionObserver(headerCallback, {
+    root: null,
+    threshold: 0,
+    rootMargin: `-${navHeight}px`
+})
+
+headerObserver.observe(header);
 ///////////////////////////////////////
 // Practice
 
