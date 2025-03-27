@@ -134,6 +134,17 @@ nav.addEventListener("mouseout", function (e) {
     handleHover(e, "1")
 });
 
+const sectionTop = section1.getBoundingClientRect().top;
+// Sticky header on scroll
+// using scroll event -> very bed for performance!
+window.addEventListener("scroll", function (e) {
+    if (window.scrollY > sectionTop) {
+        nav.classList.add("sticky");
+    } else {
+        nav.classList.remove("sticky");
+    }
+
+});
 ///////////////////////////////////////
 // Practice
 
