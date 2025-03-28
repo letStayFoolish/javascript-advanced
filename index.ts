@@ -204,7 +204,7 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 });
 
 allSections.forEach((section) => {
-    section.classList.add("section--hidden");
+    // section.classList.add("section--hidden");
     sectionObserver.observe(section)
 });
 
@@ -234,6 +234,53 @@ const imgObserver = new IntersectionObserver(loadImg, {
 })
 
 allImages.forEach(img => imgObserver.observe(img));
+
+// Slider
+const slider = document.querySelector(".slider") as HTMLDivElement;
+const slides = document.querySelectorAll(".slide");
+const slideBtnLeft = document.querySelector(".slider__btn--left") as HTMLButtonElement;
+const slideBtnRight = document.querySelector(".slider__btn--right") as HTMLButtonElement;
+
+let currentSlide = 0;
+// slider.style.transform = 'scale(0.4) translateX(-800px)';
+// slider.style.overflow = 'visible';
+
+// slides.forEach((slide, index) => {
+//     (slide as HTMLDivElement).style.transform = `translateX(${100 * index}%)`
+// }); // 0%, 100%. 200%, 300% -> slides.length = 4 (index: 0, 1, 2, 3)
+
+const goToSlide = function (currentSlide: number) {
+    slides.forEach((slide, index) => {
+        (slide as HTMLDivElement).style.transform = `translateX(${100 * (index - currentSlide)}%)`
+    });
+}
+
+goToSlide(0);
+
+// Next slide logic
+slideBtnRight.addEventListener("click", function () {
+        if (currentSlide === slides.length - 1) {
+            currentSlide = 0;
+        } else {
+            currentSlide++;
+        }
+
+        goToSlide(currentSlide);
+    }
+);
+
+// Previous slide logic
+slideBtnLeft.addEventListener("click", function () {
+        if (currentSlide === 0) {
+            currentSlide = 0;
+        } else {
+            currentSlide--;
+        }
+
+        goToSlide(currentSlide);
+    }
+)
+
 ///////////////////////////////////////
 // Practice
 
