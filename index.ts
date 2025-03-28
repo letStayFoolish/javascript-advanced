@@ -236,12 +236,14 @@ const imgObserver = new IntersectionObserver(loadImg, {
 allImages.forEach(img => imgObserver.observe(img));
 
 // Slider
-const slider = document.querySelector(".slider") as HTMLDivElement;
-const slides = document.querySelectorAll(".slide");
-const slideBtnLeft = document.querySelector(".slider__btn--left") as HTMLButtonElement;
-const slideBtnRight = document.querySelector(".slider__btn--right") as HTMLButtonElement;
+const slider = function () {
+    // const slider = document.querySelector(".slider") as HTMLDivElement;
+    const slides = document.querySelectorAll(".slide");
+    const slideBtnLeft = document.querySelector(".slider__btn--left") as HTMLButtonElement;
+    const slideBtnRight = document.querySelector(".slider__btn--right") as HTMLButtonElement;
+    const dotsContainer = document.querySelector(".dots") as HTMLDivElement;
 
-let currentSlide = 0;
+    let currentSlide = 0;
 // slider.style.transform = 'scale(0.4) translateX(-800px)';
 // slider.style.overflow = 'visible';
 
@@ -249,16 +251,31 @@ let currentSlide = 0;
 //     (slide as HTMLDivElement).style.transform = `translateX(${100 * index}%)`
 // }); // 0%, 100%. 200%, 300% -> slides.length = 4 (index: 0, 1, 2, 3)
 
-const goToSlide = function (currentSlide: number) {
-    slides.forEach((slide, index) => {
-        (slide as HTMLDivElement).style.transform = `translateX(${100 * (index - currentSlide)}%)`
-    });
-}
+    const goToSlide = function (currentSlide: number) {
+        slides.forEach((slide, index) => {
+            (slide as HTMLDivElement).style.transform = `translateX(${100 * (index - currentSlide)}%)`
+        });
+    };
 
-goToSlide(0);
+    const createDots = function () {
+        slides.forEach((_, index) => {
+            dotsContainer.insertAdjacentHTML("beforeend", `
+            <button class="dots__dot" data-slide=${index}></button>
+            `
+            )
+        })
+    };
 
-// Next slide logic
-slideBtnRight.addEventListener("click", function () {
+    const activeDot = function (slide: number) {
+        const dots = document.querySelectorAll(".dots__dot")
+        dots.forEach(dotEl => {
+            dotEl.classList.remove("dots__dot--active")
+        });
+
+        (document.querySelector(`.dots__dot[data-slide="${slide}"]`) as HTMLButtonElement).classList.add("dots__dot--active");
+    };
+
+    const nextSlide = function () {
         if (currentSlide === slides.length - 1) {
             currentSlide = 0;
         } else {
@@ -266,11 +283,11 @@ slideBtnRight.addEventListener("click", function () {
         }
 
         goToSlide(currentSlide);
-    }
-);
+        activeDot(currentSlide);
 
-// Previous slide logic
-slideBtnLeft.addEventListener("click", function () {
+    };
+
+    const prevSlide = function () {
         if (currentSlide === 0) {
             currentSlide = 0;
         } else {
@@ -278,9 +295,40 @@ slideBtnLeft.addEventListener("click", function () {
         }
 
         goToSlide(currentSlide);
-    }
-)
+        activeDot(currentSlide);
 
+    };
+
+    const init = function () {
+        goToSlide(0);
+        createDots();
+        activeDot(0);
+    };
+
+    init();
+// Next slide logic
+    slideBtnRight.addEventListener("click", nextSlide);
+// Previous slide logic
+    slideBtnLeft.addEventListener("click", prevSlide)
+// Move through the slides using arrow keyboard keys
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+        if (e.key === "ArrowRight") {
+            nextSlide();
+        }
+        if (e.key === "ArrowLeft") {
+            prevSlide();
+        }
+    });
+
+    dotsContainer?.addEventListener("click", function (e) {
+        if ((e.target as HTMLButtonElement).classList.contains("dots__dot")) {
+            const {slide} = (e.target as HTMLButtonElement).dataset
+            goToSlide(Number(slide))
+            activeDot(Number(slide));
+        }
+    });
+}
+slider();
 ///////////////////////////////////////
 // Practice
 
@@ -305,15 +353,15 @@ message.classList.add('cookie-message');
 message.innerHTML = `We use cookies for improved functionallity and analytics. <button class="btn btn--close-cookie">Got it!</button>`;
 // header.prepend(message); // add as a first child
 // if we use prepend and then after it, we insert it using append -> we actually moved the inserted element. Element got inserted only once, any action coming next will actually move element.
-header.append(message); // add as a last child
+// header.append(message); // add as a last child
 // header.prepend(message.cloneNode(true));
 // header.before(message);
 // header.after(message);
 
 // Delete elements
-(document.querySelector(".btn--close-cookie") as HTMLButtonElement).addEventListener("click", function () {
-    message.remove();
-});
+// (document.querySelector(".btn--close-cookie") as HTMLButtonElement).addEventListener("click", function () {
+//     message.remove();
+// });
 
 // Styles
 // Inline styles
