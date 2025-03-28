@@ -5,7 +5,7 @@ const modal = document.querySelector('.modal') as HTMLDivElement;
 const overlay = document.querySelector('.overlay') as HTMLDivElement;
 const btnCloseModal = document.querySelector('.btn--close-modal') as HTMLButtonElement;
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-const allSections = document.querySelectorAll(".section");
+// const allSections = document.querySelectorAll(".section");
 const allButtons = document.getElementsByTagName("button");
 const message = document.createElement('div');
 const header = document.querySelector(".header") as HTMLDivElement;
@@ -185,6 +185,29 @@ const headerObserver = new IntersectionObserver(headerCallback, {
 })
 
 headerObserver.observe(header);
+
+// Reveal sections
+const allSections = document.querySelectorAll(".section");
+
+const revealSection = function (entries: any, observer: IntersectionObserver) {
+    const [entry] = entries;
+    console.log(entry)
+    if (!entry.isIntersecting) return;
+
+    entry.target.classList.remove("section--hidden");
+    observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+    root: null,
+    threshold: 0.15, // 15%
+    // rootMargin: "-200px"
+});
+
+allSections.forEach((section) => {
+    section.classList.add("section--hidden");
+    sectionObserver.observe(section)
+});
 ///////////////////////////////////////
 // Practice
 
