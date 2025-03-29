@@ -449,4 +449,50 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
 window.addEventListener("load", function (e) {
     console.log("Images loaded!", e)
-}) // not only HTML and JS are loaded, but the external sources as well such as images, css files...
+}); // not only HTML and JS are loaded, but the external sources as well such as images, css files...
+
+// DEFER and ASYNC scrypt loading
+// Regular
+`<script src="index.js"></script>`;
+/**
+ * HEAD:
+ * Start parsing the HTML by the browser. Parsing HTML - Building the DOM tree from the HTML elements. If the `scripts` tag is in the head element,
+ * Eventually it will be found. That means fetching script and executing the JS code, during this time parsing HTML will be stopped. After this is finished, parsing HTML continues...
+ * After parsing html, fetching and executing js code is finished, DOMContentLoaded event is triggered.
+ * | Parsing HTML (finished) | Fetch script | executing JS code | Parsing HTML (finished) | DOMContentLoaded |
+ *
+ * BODY (at the end):
+ * HTML is parsed, then `script` tag is found, and only then starts fetching script and after is fetched executing js code.
+ * | Parsing HTML (finished) | Fetch script | executing JS code | DOMContentLoaded |
+ */
+// Async
+`<script async src="index.js"></script>`;
+/**
+ * Fetch script and execute JS code, while HTML is being parsed. This is still not perfect, because parsing HTML stops while executing JS code.
+ * | Parsing HTML      | waiting...      | Finish parsing HTML | DOMContentLoaded |
+ *      | fetch script | execute JS code |
+ */
+// Defer
+`<script defer src="index.js"></script>`;
+/**
+ * With defer, script is downloaded asynchronously, but the executing is defered, and it will wait until paring HTML is done.
+ * Key difference, parsing html is never interrupted, because JS code is always executed at the end of parsing.
+ * | Parsing HTML           | execute JS code | DOMContentLoaded |
+ *      | fetch script |
+ */
+
+/**
+ * Some Key Notes for regular, async and defer script:
+ * Regular (end of body):
+ * Scripts are fetched and executed after the HTML is completely parsed.
+ *
+ * Async (in head):
+ * Scripts are fetched asynchronously and executed immediately.
+ * Usually, the DOMContentLoaded event waits for all scripts to execute, except for async scripts. So, DOMContentLoaded doesn't wait for async script.
+ * Scripts not guaranteed to execute in order.
+ *
+ * Defer (in head):
+ * Scripts are fetched asynchronously and executed after the HTML is completely parsed.
+ * DOMContentLoaded fires after defer script is executed.
+ * Scripts are executed in order.
+ */
