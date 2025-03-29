@@ -1,0 +1,47 @@
+# OOP - Object-Oriented Programming with JavaScript
+
+OOP is programming paradigm based on the **concept of objects**.
+
+We use object as a **model** to describe real-world or abstract features.
+
+Objects can contain data (**properties**) and code (**methods**). By using objects, we pack **data and corresponding
+behaviour** into one block.
+
+Objects are **building blocks** of applications, and **interact** with one another.
+
+Interactions happen through a **public interface** (API): methods that the code **outside** of object can access and use
+to
+communicate with the object.
+
+OOP is developed to **organize** code and make it **more flexible and easier ot maintain**.
+
+## Classes and Instances (Traditional OOP)
+
+**Class** is like a blueprint from which we can create **new objects**.
+
+**Instance** is real object we can use in our code, which is created from a class. -> Class itself is not an object.
+
+## The 4 Fundamental OOP Principles
+
+### Abstraction
+
+* Ignoring or hiding details that we **don't matter**, allowing to get an **overview** perspective of the _thing_ we are
+  implementing.
+
+### Encapsulation
+
+* Keeping properties and methods **private** inside the class, so they are **not accessible from the outside the class
+  **. Some methods can be **exposed** as a public interface (API).
+
+### Inheritance
+
+* Child class extends (inherits) the parent class.
+* Making all properties and methods of a certain class **available to a child class**, forming hierarchical relationship
+  between classes.
+    * This allows to **reuse common logic** and to model real-world relationship.
+    * Child could own its own properties and methods.
+
+### Polymorphism
+
+* A child class can **overwrite** a method it inherited from a parent class.
+* Polymorphism - many forms.
