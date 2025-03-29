@@ -441,3 +441,12 @@ const h1 = document.querySelector('h1') as HTMLHeadingElement;
 
 // console.log(h1.previousSibling);
 // console.log(h1.nextSibling);
+
+// This event waits just HTML and JavaScript code to be loaded
+document.addEventListener("DOMContentLoaded", function (e) {
+    console.log("HTML Parsed, and DOM tree built!", e)
+}) // this event doesn't wait images to be loaded
+
+window.addEventListener("load", function (e) {
+    console.log("Images loaded!", e)
+}) // not only HTML and JS are loaded, but the external sources as well such as images, css files...
