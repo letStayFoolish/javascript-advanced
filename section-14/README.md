@@ -45,3 +45,21 @@ OOP is developed to **organize** code and make it **more flexible and easier ot 
 
 * A child class can **overwrite** a method it inherited from a parent class.
 * Polymorphism - many forms.
+
+## Prototypes
+
+Each object has its prototype.
+
+Objects are **linked** to prototype object.
+
+Prototype has methods, that object can access to.
+
+### Prototypal Inheritance / Delegation
+
+Behaviour (methods) is **delegated** to the linked prototype object.
+
+For example:
+`Array.prototype.map()`
+
+`Array.prototype` is the **prototype** of all array objects we create in JavaScript. Therefore, **all** array object has
+access to the map method!

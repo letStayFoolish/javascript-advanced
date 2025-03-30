@@ -451,7 +451,7 @@ window.addEventListener("load", function (e) {
     console.log("Images loaded!", e)
 }); // not only HTML and JS are loaded, but the external sources as well such as images, css files...
 
-// DEFER and ASYNC scrypt loading
+// DEFER and ASYNC script loading
 // Regular
 `<script src="index.js"></script>`;
 /**
