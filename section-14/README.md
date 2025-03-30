@@ -63,3 +63,26 @@ For example:
 
 `Array.prototype` is the **prototype** of all array objects we create in JavaScript. Therefore, **all** array object has
 access to the map method!
+
+### Constructor Function
+
+Before ES6, we used to create classes using constructor function.
+
+```ts
+const Person = function (firstName: string, birthYear: number) {
+    consol.elog(this);
+
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+}
+
+new Person("Cihili", 1990);
+
+/**
+ * When we create constructor function, this is what happens behind the scenes:
+ * 1. We create an empty object: new {} is created;
+ * 2. function is called, `this` is equal to newly created object: this = {};
+ * 3. {} is linked to prototype;
+ * 4. Object created at the begining, is automatically returned from the constructor function.
+ */
+```
