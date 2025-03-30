@@ -86,3 +86,14 @@ new Person("Cihili", 1990);
  * 4. Object created at the begining, is automatically returned from the constructor function.
  */
 ```
+
+```ts
+console.log(nemanja.__proto__ === Person.prototype); // Person.prototype is not prototype of Person, but instead it is what is going to be used as prototype of all the objects that are created from Person constructor function.
+
+
+console.log(Person.prototype.isPrototypeOf(nemanja)); // true
+console.log(Person.prototype.isPrototypeOf(matilda)); // true
+console.log(Person.prototype.isPrototypeOf(Person)); // false
+
+// To be less confusing, it would be better instead of .prototype to be called like: .prototypeOfLinkedObjects
+```
