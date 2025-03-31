@@ -113,3 +113,34 @@ const PersonCl = class {
 // 2. Classes are first-class citizens
 // 3. Classes are executed in strict mode
 ```
+
+### Static methods
+
+`static` - it is not sharable with instances created from class. Static methods are NOT inherited.
+
+Instance methods will be added to .prototype property, but `static` will not.
+
+```js
+class Author {
+    constructor() {
+    };
+
+    // instance method - all instances can have access to it
+    calcAge() {
+    }
+
+    get ownerName() {
+    };
+
+    set ownerName(name: string) {
+    };
+
+    // static method
+    static hello() {
+        console.log("Hello there!")
+    };
+}
+
+const author1 = new Author();
+Author.hey();
+```

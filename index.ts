@@ -100,13 +100,10 @@ console.log(mercedes);
 
 // class declaration
 class PersonCl {
-    constructor(firstName: string, birthYear: number) {
+    constructor(firstName: string, birthYear: number, fullName: string) {
         this.firstName = firstName;
         this.birthYear = birthYear;
-    }
-
-    calcAge() {
-        console.log(2037 - this.birthYear)
+        this._fullName = fullName;
     }
 
     /**
@@ -114,12 +111,37 @@ class PersonCl {
      *     console.log(`Hello ${this.firstName}!`)
      * }
      */
+
+    get age() {
+        return 2037 - this.birthYear;
+    }
+
+    // Set a property that already exists
+    get fullName() {
+        return this._fullName;
+    }
+
+    set fullName(name: string) {
+        if (name.includes(" ")) {
+            this._fullName = name;
+        } else {
+            alert("Please enter a valid name");
+        }
+    }
+
+    calcAge() {
+        console.log(2037 - this.birthYear)
+    }
 };
 
-const jessica = new PersonCl('Jessica', 1990);
+const jessica = new PersonCl('Jessica', 1990, "Nemanja Karaklajic");
 console.log(jessica);
 jessica.calcAge();
 console.log(jessica.__proto__ === PersonCl.prototype)
+console.log("GET age", jessica.age)
+console.log("GET fullName", jessica.fullName)
+
+// console.log(jessica.fullName = );
 
 // Other way to add methods to the specific class:
 PersonCl.prototype.greet = function () {
@@ -127,3 +149,25 @@ PersonCl.prototype.greet = function () {
 }
 
 jessica.greet();
+
+// Getter and Setter
+const account = {
+    owner: "Chili",
+    movements: [200, 150, 300],
+
+    get latest() {
+        return this.movements.slice(-1).pop();
+    },
+
+    // setters takes one parameter
+    set latest(mov: number) {
+        this.movements.push(mov);
+    }
+};
+
+console.log(account.latest);
+account.latest = 88;
+console.log(account.movements);
+console.log(account.latest);
+
+
