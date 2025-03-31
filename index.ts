@@ -92,3 +92,38 @@ console.log(mercedes.break());
 console.log(mercedes.break());
 console.log(mercedes.break());
 console.log(mercedes);
+
+// ES6 - Modern way creating classes:
+
+// class expression
+// const PersonCl = class {};
+
+// class declaration
+class PersonCl {
+    constructor(firstName: string, birthYear: number) {
+        this.firstName = firstName;
+        this.birthYear = birthYear;
+    }
+
+    calcAge() {
+        console.log(2037 - this.birthYear)
+    }
+
+    /**
+     * greet() {
+     *     console.log(`Hello ${this.firstName}!`)
+     * }
+     */
+};
+
+const jessica = new PersonCl('Jessica', 1990);
+console.log(jessica);
+jessica.calcAge();
+console.log(jessica.__proto__ === PersonCl.prototype)
+
+// Other way to add methods to the specific class:
+PersonCl.prototype.greet = function () {
+    console.log(`Hello ${this.firstName}!`)
+}
+
+jessica.greet();

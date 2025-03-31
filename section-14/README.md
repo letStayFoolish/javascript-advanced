@@ -97,3 +97,19 @@ console.log(Person.prototype.isPrototypeOf(Person)); // false
 
 // To be less confusing, it would be better instead of .prototype to be called like: .prototypeOfLinkedObjects
 ```
+
+## ES6 - Modern way of writing classes in JS
+
+```js
+// Class declaration
+class PersonCL {
+};
+
+// Class expression
+const PersonCl = class {
+};
+
+// 1. Classes are NOT hoisted
+// 2. Classes are first-class citizens
+// 3. Classes are executed in strict mode
+```
