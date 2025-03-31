@@ -79,11 +79,11 @@ const Person = function (firstName: string, birthYear: number) {
 new Person("Cihili", 1990);
 
 /**
- * When we create constructor function, this is what happens behind the scenes:
- * 1. We create an empty object: new {} is created;
- * 2. function is called, `this` is equal to newly created object: this = {};
- * 3. {} is linked to prototype;
- * 4. Object created at the begining, is automatically returned from the constructor function.
+ * When we create constructor function, this is what happens behind the scenes (using `new` keyword):
+ * 1. An empty object is created: {};
+ * 2. Constructor Function call is set to the new object, `this` is equal to newly created object: this = {};
+ * 3. The new object {} is linked to the constructor function's prototype property (`__proto__` property);
+ * 4. The new object is returned from the constructor function call.
  */
 ```
 

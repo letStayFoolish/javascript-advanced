@@ -33,3 +33,27 @@ console.log(nemanja.__proto__ === Person.prototype); // Person.prototype is not 
 console.log(Person.prototype.isPrototypeOf(nemanja)); // true
 console.log(Person.prototype.isPrototypeOf(matilda)); // true
 console.log(Person.prototype.isPrototypeOf(Person)); // false
+
+Person.prototype.species = "Homo Sapiens";
+
+console.log(nemanja.species, matilda.species);
+console.log(nemanja.hasOwnProperty('firstName'));
+console.log(nemanja.hasOwnProperty('species'));
+
+console.log(nemanja.__proto__); // prototype of nemanja which is the prototype property of Person
+console.log(nemanja.__proto__.__proto__); // prototype property of Object
+console.log(nemanja.__proto__.__proto__.__proto__); // returns null -> Object.__proto__ is top of prototype chain
+
+const myArr = Array.from([1, 2, 2, 5, 5, 6, 4, 3, 4, 5]); // new Array === []; as new Object === {};
+console.log(myArr.__proto__ === Array.prototype); // true
+
+Array.prototype.unique = function () {
+    return [...new Set(this)]; // this will be the array on which this function is called;
+};
+
+console.log(myArr.unique()); // returns [1, 2, 5,  6, 4, 3]
+console.log(myArr); // returns [1, 2, 2, 5, 5, 6, 4, 3, 4, 5]
+
+const h1 = document.querySelector('h1');
+
+console.log(h1?.__proto__ === HTMLHeadingElement.prototype); // returns true
