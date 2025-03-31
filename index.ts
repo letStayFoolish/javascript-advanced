@@ -170,4 +170,46 @@ account.latest = 88;
 console.log(account.movements);
 console.log(account.latest);
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Coding challenge #2
+class CarUS {
+    private make: string;
+    private speed: number;
+
+    constructor(make: string, speed: number) {
+        this.make = make;
+        this.speed = speed;
+    }
+
+    get speedUS() {
+        console.log(`The speed of the ${this.make} is ${this.speed / 1.6} mi/h`)
+        return this.speed / 1.6;
+    }
+
+    set speedUS(speed: number) {
+        this.speed = speed * 1.6;
+        console.log(`The speed of the ${this.make} is ${this.speed} mi/h`)
+    }
+
+    accelerate() {
+        this.speed += 10;
+        console.log(`${this.make} accelerated to ${this.speed} km/h`)
+    }
+
+    break() {
+        this.speed -= 5;
+        console.log(`${this.make} decelerated to ${this.speed} km/h`)
+    }
+}
+
+const ford = new CarUS("Ford", 120);
+// console.log(ford)
+
+ford.accelerate(); // 130
+ford.accelerate(); // 140
+ford.break(); // 135
+
+ford.speedUS; // 135 / 1.6 = 84.375
+ford.speedUS = 200; // 200 * 1.6 = 320
+console.log(ford)
 
