@@ -57,3 +57,38 @@ console.log(myArr); // returns [1, 2, 2, 5, 5, 6, 4, 3, 4, 5]
 const h1 = document.querySelector('h1');
 
 console.log(h1?.__proto__ === HTMLHeadingElement.prototype); // returns true
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// Coding Challenge #1
+// 1.
+const Car = function (make: string, speed: number) {
+    this.make = make;
+    this.speed = speed;
+};
+
+const bmw = new Car("BMW", 120);
+const mercedes = new Car("Mercedes", 95);
+
+// 2.
+Car.prototype.accelerate = function () {
+    return this.speed += 10;
+};
+
+// 3.
+Car.prototype.break = function () {
+    return this.speed -= 5;
+};
+
+console.log(bmw);
+console.log(bmw.accelerate());
+console.log(bmw);
+
+// 4.
+console.log(mercedes);
+console.log(mercedes.accelerate());
+console.log(mercedes);
+
+console.log(mercedes.break());
+console.log(mercedes.break());
+console.log(mercedes.break());
+console.log(mercedes.break());
+console.log(mercedes);
