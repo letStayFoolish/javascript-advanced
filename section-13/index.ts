@@ -456,13 +456,13 @@ window.addEventListener("load", function (e) {
 `<script src="index.js"></script>`;
 /**
  * HEAD:
- * Start parsing the HTML by the browser. Parsing HTML - Building the DOM tree from the HTML elements. If the `scripts` tag is in the head element,
+ * Start parsing the HTML by the browser. Parsing HTML - Building the DOM tree from the HTML elements. If the `script` tag is in the head element,
  * Eventually it will be found. That means fetching script and executing the JS code, during this time parsing HTML will be stopped. After this is finished, parsing HTML continues...
  * After parsing html, fetching and executing js code is finished, DOMContentLoaded event is triggered.
- * | Parsing HTML (finished) | Fetch script | executing JS code | Parsing HTML (finished) | DOMContentLoaded |
+ * | Parsing HTML | Fetch script | executing JS code | Parsing HTML (finished) | DOMContentLoaded |
  *
  * BODY (at the end):
- * HTML is parsed, then `script` tag is found, and only then starts fetching script and after is fetched executing js code.
+ * HTML is parsed, then `script` tag is found, and ONLY then starts fetching script and after is fetched executing js code.
  * | Parsing HTML (finished) | Fetch script | executing JS code | DOMContentLoaded |
  */
 // Async
