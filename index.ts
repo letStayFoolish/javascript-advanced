@@ -100,21 +100,16 @@ console.log(mercedes);
 
 // class declaration
 class PersonCl {
+    private firstName: string;
+    private birthYear: number;
+
     constructor(firstName: string, birthYear: number, fullName: string) {
         this.firstName = firstName;
         this.birthYear = birthYear;
         this._fullName = fullName;
     }
 
-    /**
-     * greet() {
-     *     console.log(`Hello ${this.firstName}!`)
-     * }
-     */
-
-    get age() {
-        return 2037 - this.birthYear;
-    }
+    private _fullName: string;
 
     // Set a property that already exists
     get fullName() {
@@ -127,6 +122,16 @@ class PersonCl {
         } else {
             alert("Please enter a valid name");
         }
+    }
+
+    /**
+     * greet() {
+     *     console.log(`Hello ${this.firstName}!`)
+     * }
+     */
+
+    get age() {
+        return 2037 - this.birthYear;
     }
 
     calcAge() {
@@ -212,4 +217,40 @@ ford.break(); // 135
 ford.speedUS; // 135 / 1.6 = 84.375
 ford.speedUS = 200; // 200 * 1.6 = 320
 console.log(ford)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Inheritance Between Classes - Constructor Functions
+const PersonFC = function (firstName: string, birthYear: number) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+}
 
+PersonFC.prototype.calcAge = function () {
+    console.log(`Calculated age: ${2037 - this.birthYear}`);
+};
+
+const StudentFC = function (firstName: string, birthYear: number, course: string) {
+    PersonFC.call(this, firstName, birthYear); // here we are just calling regular function. Keyword within regular function call is undefined!!!
+    // That is why we have to specify (manually set) this keyword;
+    // this will be the empty object created using `new`
+    this.course = course;
+};
+
+// Linking prototypes
+StudentFC.prototype = Object.create(PersonFC.prototype); // it is like with classes: class Child = new ParentClass() {}
+
+StudentFC.prototype.introduce = function () {
+    console.log(`Hello my name is ${this.firstName}, and I am student at ${this.course}.`)
+}
+
+const branko = new PersonFC("Branko", 1990);
+console.log(branko.calcAge());
+
+const student = new StudentFC("Nemanja", 1978, "Web Development");
+console.log(student);
+console.log(student.introduce());
+console.log(StudentFC.prototype.isPrototypeOf(student)); // true
+console.log(student.__proto__ === StudentFC.prototype); // true
+console.log(StudentFC.prototype.__proto__);
+console.log(StudentFC.prototype);
+console.dir(StudentFC.prototype.constructor);
+student.calcAge();

@@ -144,3 +144,33 @@ class Author {
 const author1 = new Author();
 Author.hey();
 ```
+
+## Inheritance Between Classes - Constructor Functions
+
+Specifying the `this` keyword inside regular function:
+
+```js
+const Person = function (firstName, birthYear) {
+    this.firstName = firstname;
+    this.birthYear = birthYear;
+};
+Person.prototype.calcAge = function () {
+    console.log(2037 - this.birthYear);
+};
+
+
+const Student = function (firstName, birthYear, course) {
+    // specify this keyword
+    Person.call(this, firstName, birthYear);
+    this.course = course;
+}
+```
+
+### Linking prototypes - inheritance
+
+```js
+Student.prototype = Object.create(Person.prototype);
+```
+
+![screen-01.png](screen-01.png)
+![screen-02.png](screen-02.png)
