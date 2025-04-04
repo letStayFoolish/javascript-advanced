@@ -246,11 +246,55 @@ const branko = new PersonFC("Branko", 1990);
 console.log(branko.calcAge());
 
 const student = new StudentFC("Nemanja", 1978, "Web Development");
-console.log(student);
-console.log(student.introduce());
-console.log(StudentFC.prototype.isPrototypeOf(student)); // true
-console.log(student.__proto__ === StudentFC.prototype); // true
-console.log(StudentFC.prototype.__proto__);
-console.log(StudentFC.prototype);
-console.dir(StudentFC.prototype.constructor);
-student.calcAge();
+// console.log(student);
+// console.log(student.introduce());
+// console.log(StudentFC.prototype.isPrototypeOf(student)); // true
+// console.log(student.__proto__ === StudentFC.prototype); // true
+// console.log(StudentFC.prototype.__proto__);
+// console.log(StudentFC.prototype);
+// console.dir(StudentFC.prototype.constructor);
+// student.calcAge();
+
+// Coding Challenge #3
+/**
+ * const Car = function (make: string, speed: number) {
+ *     this.make = make;
+ *     this.speed = speed;
+ * };
+ */
+// 1. Constructor Function
+const EV = function (make: string, speed: number, charge: number) {
+    Car.call(this, make, speed);
+    this.charge = charge;
+};
+
+// Link prototypes - inherit Car's methods
+EV.prototype = Object.create(Car.prototype);
+
+// 2. implement an 'chargeBattery' method which takes an argument `chargeTo` and sets the battery charge to `chargeTo`;
+EV.prototype.chargeBattery = function (chargeTo: number) {
+    this.charge = chargeTo;
+};
+
+// 3. implement an 'accelerate' method that will increase the car's speed by 20, and decrease the charge by 1%;
+// POLYMORPHISM
+// If there are two or more methods with the same name, the first one that appears in the prototype chain will be used!
+// This means that child class can override the class inherited from the parent class!!!
+EV.prototype.accelerate = function () {
+    this.speed += 20;
+    this.charge--;
+
+    console.log(`${this.make} going at ${this.speed} km/h, with a charge of ${this.charge}%.`)
+}
+
+const tesla = new EV("Tesla", 120, 23);
+console.log(tesla);
+console.log(tesla.chargeBattery(90));
+console.log(tesla);
+tesla.accelerate();
+tesla.accelerate();
+console.log(tesla)
+// tesla.accelerate();
+tesla.break();
+console.log(tesla)
+// console.log(tesla)
