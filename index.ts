@@ -107,7 +107,7 @@ class PersonCl {
         this.firstName = firstName;
         this.birthYear = birthYear;
         this._fullName = fullName;
-    }
+    };
 
     private _fullName: string;
 
@@ -297,4 +297,27 @@ console.log(tesla)
 // tesla.accelerate();
 tesla.break();
 console.log(tesla)
+
 // console.log(tesla)
+
+class StudentCl extends PersonCl {
+    private course: string;
+
+    constructor(firstName: string, birthYear: number, course: string) {
+        super(firstName, birthYear, "Nemanja Karaklajic");
+        this.course = course;
+    };
+
+    introduce() {
+        console.log(`My name is ${this.firstName} and I study ${this.course}`)
+    }
+
+    calcAge() {
+        // super.calcAge();
+        console.log(`I am ${this.age} years old, and because of that I am ${this.age / 10} years old in the future.`)
+    }
+}
+
+const marta = new StudentCl("Marta", 1990, "Web Development");
+marta.introduce();
+marta.calcAge();
