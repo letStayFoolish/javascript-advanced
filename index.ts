@@ -321,3 +321,30 @@ class StudentCl extends PersonCl {
 const marta = new StudentCl("Marta", 1990, "Web Development");
 marta.introduce();
 marta.calcAge();
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// Inheritance Between "Classes": Object.create
+const PersonProto = {
+    firstName: "Nemanja",
+    birthYear: 1990,
+    calcAge() {
+        console.log(`Calculated age: ${2037 - this.birthYear}`);
+    },
+
+    init(firstName: string, birthYear: number) {
+        this.firstName = firstName;
+        this.birthYear = birthYear;
+    }
+}
+
+const personObj = Object.create(PersonProto);
+
+const StudentProto = Object.create(PersonProto);
+StudentProto.init = function (firstName: string, birthYear: number, course: string) {
+    PersonProto.init.call(this, firstName, birthYear);
+    this.course = course;
+}
+const studentObj = Object.create(StudentProto);
+studentObj.init("Irina", 1994, "Web Development");
+studentObj.calcAge();
+
