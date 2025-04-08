@@ -360,14 +360,15 @@ jay.introduce();
 class AccountCl {
     private owner: string;
     private currency: string;
-    private pin: number;
-    private movements: number[] = [];
     private locale = navigator.language;
+    // Protected property - convention
+    private _pin: number;
+    private _movements: number[] = [];
 
     constructor(owner: string, currency: string, pin: number) {
         this.owner = owner;
         this.currency = currency;
-        this.pin = pin;
+        this._pin = pin;
     }
 
     get accountIngo() {
@@ -375,21 +376,25 @@ class AccountCl {
         return (`Owner: ${this.owner}, Currency: ${this.currency}, PIN: ${this.pin}, Movements: ${this.movements}, Locale: ${this.locale}`);
     }
 
+    getMovements() {
+        return this._movements;
+    }
+
     deposit(value: number) {
-        this.movements.push(value)
+        this._movements.push(value)
     }
 
     withdrawal(value: number) {
-        this.movements.push(-value);
+        this._movements.push(-value);
         // ...or even do it like: this.deposit(-value);
     }
 
-    approveLoan() {
+    _approveLoan() {
         return true;
     }
 
     requestLoan(value: number) {
-        if (this.approveLoan()) {
+        if (this._approveLoan()) {
             this.withdrawal(value);
 
             console.log("Loan approved!")
