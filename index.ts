@@ -386,9 +386,8 @@ class AccountCl {
     }
 
     // Public methods
-    get accountIngo() {
-        console.dir(`Owner: ${this.owner}, Currency: ${this.currency}, PIN: ${this.pin}, Movements: ${this.movements}, Locale: ${this.locale}`);
-        return (`Owner: ${this.owner}, Currency: ${this.currency}, PIN: ${this.pin}, Movements: ${this.movements}, Locale: ${this.locale}`);
+    get accountInfo() {
+        return `Owner: ${this.owner}, Currency: ${this.currency}, Movements: ${this.#movements}, Locale: ${this.locale}`);
     }
 
     // static getOwnerString() {
@@ -396,41 +395,54 @@ class AccountCl {
     // }
 
     getMovements() {
-        return this.#movements;
+        // Return a copy to avoid external mutation;
+        return [...this.#movements];
     }
 
-    deposit(value: number) {
-        this.#movements.push(value)
+    deposit(amount: number) {
+        if(amount <= 0) throw new Error("Deposit amount must be positive");
+        this.#movements.push(amount);
+
+        return this; // returning this in methods make them chainable
     }
 
     // _approveLoan() {
     //     return true;
     // }
 
-    withdrawal(value: number) {
-        this.#movements.push(-value);
+    withdrawal(amount: number) {
+        this.#movements.push(-amount);
         // ...or even do it like: this.deposit(-value);
+        return this; // returning this in methods make them chainable
     }
 
-    requestLoan(value: number) {
-        if (this.#approveLoan()) {
-            this.withdrawal(value);
-
+    requestLoan(amount: number) {
+        if (this.#approveLoan(amount)) {
+            this.deposit(amount);
             console.log("Loan approved!")
+        } else {
+            console.log("Loan rejected!");
         }
+
+        return this; // returning this in methods make them chainable
     }
 
     // Private methods
-    #approveLoan() {
+    #approveLoan(amount: number) {
         return true;
     }
 }
 
 const myAccount = new AccountCl("Nemanja", "EUR", 1234);
-myAccount.deposit(100);
-myAccount.deposit(20);
-myAccount.withdrawal(20);
-myAccount.withdrawal(80);
+// myAccount.deposit(100);
+// myAccount.deposit(20);
+// myAccount.withdrawal(20);
+// myAccount.withdrawal(80);
 
+// Methods chaining (thanks to return this);
+myAccount.deposit(100).deposit(20).withdrawal(20).withdrawal(80);
+console.log(myAccount.accountInfo);
 myAccount.requestLoan(100);
 console.dir(myAccount);
+
+myAccount.getMovements();
