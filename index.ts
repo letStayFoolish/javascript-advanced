@@ -330,7 +330,6 @@ const PersonProto = {
     calcAge() {
         console.log(`Calculated age: ${2037 - this.birthYear}`);
     },
-
     init(firstName: string, birthYear: number) {
         this.firstName = firstName;
         this.birthYear = birthYear;
@@ -343,8 +342,17 @@ const StudentProto = Object.create(PersonProto);
 StudentProto.init = function (firstName: string, birthYear: number, course: string) {
     PersonProto.init.call(this, firstName, birthYear);
     this.course = course;
-}
-const studentObj = Object.create(StudentProto);
-studentObj.init("Irina", 1994, "Web Development");
-studentObj.calcAge();
+
+    console.log(`Hello my name is ${this.firstName}, and I am student at ${this.course}.`)
+};
+
+StudentProto.introduce = function () {
+    console.log(`Hello my name is ${this.firstName}, and I am student at ${this.course}.`)
+};
+
+const jay = Object.create(StudentProto);
+
+jay.init("Jay", 1994, "Web Development");
+jay.calcAge();
+jay.introduce();
 
