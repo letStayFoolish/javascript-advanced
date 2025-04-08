@@ -356,3 +356,52 @@ jay.init("Jay", 1994, "Web Development");
 jay.calcAge();
 jay.introduce();
 
+////////////////////////////////////////////////////////////////////////////////////////////
+class AccountCl {
+    private owner: string;
+    private currency: string;
+    private pin: number;
+    private movements: number[] = [];
+    private locale = navigator.language;
+
+    constructor(owner: string, currency: string, pin: number) {
+        this.owner = owner;
+        this.currency = currency;
+        this.pin = pin;
+    }
+
+    get accountIngo() {
+        console.dir(`Owner: ${this.owner}, Currency: ${this.currency}, PIN: ${this.pin}, Movements: ${this.movements}, Locale: ${this.locale}`);
+        return (`Owner: ${this.owner}, Currency: ${this.currency}, PIN: ${this.pin}, Movements: ${this.movements}, Locale: ${this.locale}`);
+    }
+
+    deposit(value: number) {
+        this.movements.push(value)
+    }
+
+    withdrawal(value: number) {
+        this.movements.push(-value);
+        // ...or even do it like: this.deposit(-value);
+    }
+
+    approveLoan() {
+        return true;
+    }
+
+    requestLoan(value: number) {
+        if (this.approveLoan()) {
+            this.withdrawal(value);
+
+            console.log("Loan approved!")
+        }
+    }
+}
+
+const myAccount = new AccountCl("Nemanja", "EUR", 1234);
+myAccount.deposit(100);
+myAccount.deposit(20);
+myAccount.withdrawal(20);
+myAccount.withdrawal(80);
+
+myAccount.requestLoan(100);
+console.dir(myAccount);
