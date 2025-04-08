@@ -394,10 +394,15 @@ class AccountCl {
     //     return this.owner;
     // }
 
-    getMovements() {
+    get movements() {
         // Return a copy to avoid external mutation;
         return [...this.#movements];
     }
+
+    // getMovements() {
+    //     // Return a copy to avoid external mutation;
+    //     return [...this.#movements];
+    // }
 
     deposit(amount: number) {
         if(amount <= 0) throw new Error("Deposit amount must be positive");
@@ -445,4 +450,63 @@ console.log(myAccount.accountInfo);
 myAccount.requestLoan(100);
 console.dir(myAccount);
 
-myAccount.getMovements();
+console.log(myAccount.movements);
+
+// Coding Challenge #4
+// 1. Re-create challenge #3 using ES6 classes;
+class CarCl {
+    make: string; speed: number;
+
+    constructor (make: string, speed: number) {
+        this.make = make;
+        this.speed = speed;
+    }
+
+    accelerate() {
+        this.speed += 10;
+        console.log(`${this.make} accelerated to ${this.speed} km/h`)
+        return this
+    }
+
+    break() {
+        this.speed -= 5;
+        console.log(`${this.make} decelerated to ${this.speed} km/h`)
+        // 3. Implement the ability to chain methods: accelerate, break and chargeBattery
+        return this;
+    }
+}
+
+// 1. Re-create challenge #3 using ES6 classes;
+class EVCl extends CarCl {
+    // 2. Make charge property private;
+    // _charge: number; // or #charge
+    #charge: number;
+
+    constructor(make: string, speed: number, charge: number ) {
+        super(make, speed);
+        this.#charge = charge;
+    }
+
+    get carInfo() {
+        return `Make: ${this.make}, Speed: ${this.speed}, Charge: ${this.#charge}%`
+    }
+
+    chargeBattery(chargeTo: number) {
+        this.#charge = chargeTo;
+        // 3. Implement the ability to chain methods: accelerate, break and chargeBattery
+        return this;
+    }
+
+    accelerate() {
+        this.speed += 20;
+        this.#charge--;
+        console.log(`${this.make} going at ${this.speed} km/h, with a charge of ${this.#charge}%.`)
+        // 3. Implement the ability to chain methods: accelerate, break and chargeBattery
+        return this;
+    }
+}
+
+const rivian = new EVCl("Rivian", 123, 23);
+
+rivian.accelerate().accelerate().accelerate().break().chargeBattery(50).accelerate();
+console.log(rivian.carInfo);
