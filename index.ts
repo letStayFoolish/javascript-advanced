@@ -357,48 +357,72 @@ jay.calcAge();
 jay.introduce();
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * Public fields
+ * Private fields
+ * Public methods
+ * Private methods
+ * there is also the static version
+ */
 class AccountCl {
-    private owner: string;
-    private currency: string;
-    private locale = navigator.language;
+    // Public fields (instances)
+    locale = navigator.language;
+    owner: string;
+    currency: string;
+
+
     // Protected property - convention
-    private _pin: number;
-    private _movements: number[] = [];
+    // private _pin: number;
+    // private _movements: number[] = [];
+
+    // Private fields
+    #movements: number[] = [];
+    #pin: number;
 
     constructor(owner: string, currency: string, pin: number) {
         this.owner = owner;
         this.currency = currency;
-        this._pin = pin;
+        this.#pin = pin;
     }
 
+    // Public methods
     get accountIngo() {
         console.dir(`Owner: ${this.owner}, Currency: ${this.currency}, PIN: ${this.pin}, Movements: ${this.movements}, Locale: ${this.locale}`);
         return (`Owner: ${this.owner}, Currency: ${this.currency}, PIN: ${this.pin}, Movements: ${this.movements}, Locale: ${this.locale}`);
     }
 
+    // static getOwnerString() {
+    //     return this.owner;
+    // }
+
     getMovements() {
-        return this._movements;
+        return this.#movements;
     }
 
     deposit(value: number) {
-        this._movements.push(value)
+        this.#movements.push(value)
     }
 
+    // _approveLoan() {
+    //     return true;
+    // }
+
     withdrawal(value: number) {
-        this._movements.push(-value);
+        this.#movements.push(-value);
         // ...or even do it like: this.deposit(-value);
     }
 
-    _approveLoan() {
-        return true;
-    }
-
     requestLoan(value: number) {
-        if (this._approveLoan()) {
+        if (this.#approveLoan()) {
             this.withdrawal(value);
 
             console.log("Loan approved!")
         }
+    }
+
+    // Private methods
+    #approveLoan() {
+        return true;
     }
 }
 
