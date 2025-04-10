@@ -1,5 +1,4 @@
 console.log("Hello world!");
-
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -16,6 +15,18 @@ const getCoords = function () {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
+        const coords = [latitude, longitude]
+
+        const map = L.map('map').setView(coords, 13); // 'map' id name of element where we gonna store map <div id="map"></div>
+
+        L.tileLayer(`https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png`, {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker(coords).addTo(map)
+            .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+            .openPopup();
+
         console.log({latitude, longitude})
         console.log(`https://www.google.rs/maps/@${latitude},${longitude}`)
     }, error => {
@@ -24,3 +35,4 @@ const getCoords = function () {
 }
 
 getCoords();
+
