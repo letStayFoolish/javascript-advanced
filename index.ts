@@ -23,9 +23,23 @@ const getCoords = function () {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        L.marker(coords).addTo(map)
-            .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-            .openPopup();
+
+        map.on("click", function (mapEvent) {
+            console.log(mapEvent)
+
+            const {lat, lng} = mapEvent.latlng
+
+            L.marker([lat, lng]).addTo(map)
+                .bindPopup(L.popup({
+                    maxWidth: 300,
+                    minWidth: 100,
+                    autoClose: false,
+                    closeOnClick: false,
+                    className: `running-popup`,
+                }))
+                .setPopupContent(`Running`)
+                .openPopup();
+        });
 
         console.log({latitude, longitude})
         console.log(`https://www.google.rs/maps/@${latitude},${longitude}`)
