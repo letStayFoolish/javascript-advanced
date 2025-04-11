@@ -10,76 +10,72 @@ const inputDuration = document.querySelector('.form__input--duration') as HTMLIn
 const inputCadence = document.querySelector('.form__input--cadence') as HTMLInputElement;
 const inputElevation = document.querySelector('.form__input--elevation') as HTMLInputElement;
 
-let map: any, mapEvent: any;
+class App {
+    #map;
+    #mapEvent;
 
-const getCoords = function () {
-    return navigator.geolocation.getCurrentPosition(position => {
+    constructor() {
+        this._getPosition(); // we call the method within constructor - because it will be automatically called as we render App. This is needed behaviour at initialization.
+        form.addEventListener('submit', this._newWorkout.bind(this));
+        inputType.addEventListener('change', this._toggleElevationField)
+    }
+
+    _getPosition() {
+        if (navigator.geolocation) {
+            return navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), error => {
+                console.log(error);
+            });
+        }
+    };
+
+    _loadMap(position: any) {
+        console.log(this);
+
+
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
         const coords = [latitude, longitude]
 
-        map = L.map('map').setView(coords, 13); // 'map' id name of element where we gonna store map <div id="map"></div>
+        this.#map = L.map('map').setView(coords, 13); // 'map' id name of element where we gonna store map <div id="map"></div>
 
         L.tileLayer(`https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png`, {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+        }).addTo(this.#map);
 
 
-        map.on("click", function (event: any) {
-            // Initially clear the form input fields
-            inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = '';
+        this.#map.on("click", this._showForm.bind(this));
+    };
 
+    _showForm(event: any) {
+        // Initially clear the form input fields
+        inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = '';
+        this.#mapEvent = event;
+        form.classList.remove('hidden');
+        inputDistance.focus();
+    };
 
-            form.classList.remove('hidden');
-            inputDistance.focus();
+    _toggleElevationField() {
+        (inputCadence.closest(".form__row") as HTMLDivElement).classList.toggle("form__row--hidden");
+        (inputElevation.closest(".form__row") as HTMLDivElement).classList.toggle("form__row--hidden");
+    };
 
-            mapEvent = event;
+    _newWorkout(e: any) {
+        e.preventDefault();
 
-            // console.log(mapEvent)
-            //
-            // const {lat, lng} = mapEvent.latlng
-            //
-            // L.marker([lat, lng]).addTo(map)
-            //     .bindPopup(L.popup({
-            //         maxWidth: 300,
-            //         minWidth: 100,
-            //         autoClose: false,
-            //         closeOnClick: false,
-            //         className: `running-popup`,
-            //     }))
-            //     .setPopupContent(`Running`)
-            //     .openPopup();
-        });
+        const {lat, lng} = this.#mapEvent.latlng
 
-        console.log({latitude, longitude})
-        console.log(`https://www.google.rs/maps/@${latitude},${longitude}`)
-    }, error => {
-        console.log(error);
-    });
+        L.marker([lat, lng]).addTo(this.#map)
+            .bindPopup(L.popup({
+                maxWidth: 300,
+                minWidth: 100,
+                autoClose: false,
+                closeOnClick: false,
+                className: `running-popup`,
+            }))
+            .setPopupContent(`Running`)
+            .openPopup();
+    };
 }
 
-getCoords();
-
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const {lat, lng} = mapEvent.latlng
-
-    L.marker([lat, lng]).addTo(map)
-        .bindPopup(L.popup({
-            maxWidth: 300,
-            minWidth: 100,
-            autoClose: false,
-            closeOnClick: false,
-            className: `running-popup`,
-        }))
-        .setPopupContent(`Running`)
-        .openPopup();
-})
-
-inputType.addEventListener('change', (e) => {
-    (inputCadence.closest(".form__row") as HTMLDivElement).classList.toggle("form__row--hidden");
-    (inputElevation.closest(".form__row") as HTMLDivElement).classList.toggle("form__row--hidden");
-})
-
+const app = new App();
