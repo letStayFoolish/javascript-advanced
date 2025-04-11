@@ -10,6 +10,59 @@ const inputDuration = document.querySelector('.form__input--duration') as HTMLIn
 const inputCadence = document.querySelector('.form__input--cadence') as HTMLInputElement;
 const inputElevation = document.querySelector('.form__input--elevation') as HTMLInputElement;
 
+class Workout {
+    coords: number[]; // [lat, lnt]
+    distance: number; // in km
+    duration: number; // in min
+    date = new Date();
+    id = (Date.now() + "").slice(-10);
+
+    constructor(coords: number[], distance: number, duration: number) {
+        this.coords = coords;
+        this.distance = distance;
+        this.duration = duration;
+    }
+}
+
+class Running extends Workout {
+    cadence: number; // in steps/min
+    pace: number
+
+    constructor(coords: number[], distance: number, duration: number, cadence: number) {
+        super(coords, distance, duration);
+        this.cadence = cadence;
+        this.calcPace()
+    }
+
+    calcPace() {
+        this.pace = this.duration / this.distance;
+        return this.pace;
+    }
+}
+
+class Cycling extends Workout {
+    elevationGain: number; // in m
+    speed: number
+
+    constructor(coords: number[], distance: number, duration: number, elevationGain: number) {
+        super(coords, distance, duration);
+        this.elevationGain = elevationGain;
+        this.calcSpeed();
+    }
+
+    calcSpeed() {
+        this.speed = this.distance / (this.duration * 60);
+        return this.speed;
+    }
+}
+
+//
+// const run1 = new Running([45.7597, 4.8422], 10, 20, 100);
+// const cycling1 = new Cycling([45.7597, 4.8422], 10, 20, 100);
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Application Architecture
+
 class App {
     #map;
     #mapEvent;
