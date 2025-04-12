@@ -3,7 +3,7 @@ console.log("Hello world!");
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const form = document.querySelector('.form') as HTMLFormElement;
-const containerWorkouts = document.querySelector('.workouts');
+const containerWorkouts = document.querySelector('.workouts') as HTMLUListElement;
 const inputType = document.querySelector('.form__input--type') as HTMLInputElement;
 const inputDistance = document.querySelector('.form__input--distance') as HTMLInputElement;
 const inputDuration = document.querySelector('.form__input--duration') as HTMLInputElement;
@@ -26,7 +26,8 @@ class Workout {
 
 class Running extends Workout {
     cadence: number; // in steps/min
-    pace: number
+    pace: number;
+    type: "running" | "cycling" = "running"
 
     constructor(coords: number[], distance: number, duration: number, cadence: number) {
         super(coords, distance, duration);
@@ -42,7 +43,8 @@ class Running extends Workout {
 
 class Cycling extends Workout {
     elevationGain: number; // in m
-    speed: number
+    speed: number;
+    type: "running" | "cycling" = "cycling"
 
     constructor(coords: number[], distance: number, duration: number, elevationGain: number) {
         super(coords, distance, duration);
@@ -56,7 +58,6 @@ class Cycling extends Workout {
     }
 }
 
-//
 // const run1 = new Running([45.7597, 4.8422], 10, 20, 100);
 // const cycling1 = new Cycling([45.7597, 4.8422], 10, 20, 100);
 
@@ -64,6 +65,7 @@ class Cycling extends Workout {
 // Application Architecture
 
 class App {
+    workouts: any[] = [];
     #map;
     #mapEvent;
 
@@ -116,19 +118,81 @@ class App {
     _newWorkout(e: any) {
         e.preventDefault();
 
+        // helper function
+        const validInputs = (...inputs: any[]) => inputs.every((input) => (Number.isFinite(input)));
+
+        const type = inputType.value;
+        const distance = +inputDistance.value;
+        const duration = +inputDuration.value;
+        const cadence = +inputCadence.value;
+        const elevationGain = +inputElevation.value;
         const {lat, lng} = this.#mapEvent.latlng
 
-        L.marker([lat, lng]).addTo(this.#map)
+        let workout: Running | Cycling;
+
+        if (type === "running") {
+            // check if input fields are valid
+            // if (!Number.isFinite(distance) || !Number.isFinite(duration || !Number.isFinite(cadence))) return alert("Please enter valid values");
+            if (!validInputs(distance, duration, cadence)) return alert("Please enter valid values");
+
+            workout = new Running([lat, lng], distance, duration, cadence);
+        }
+
+        if (type === "cycling") {
+            // check if input fields are valid
+            if (!validInputs(distance, duration, elevationGain)) return alert("Please enter valid values");
+
+            workout = new Cycling([lat, lng], distance, duration, elevationGain);
+        }
+
+        console.dir(workout)
+
+        this.workouts.push(workout);
+        this.renderWorkoutMarker(workout);
+
+        this.workouts.forEach(workout =>
+            containerWorkouts.insertAdjacentHTML("beforeend", `
+        <li class="workout workout--${workout.type}" data-id="1234567890">
+          <h2 class="workout__title">Running on April 14</h2>
+          <div class="workout__details">
+            <span class="workout__icon">🏃‍♂️</span>
+            <span class="workout__value">${workout.distance}</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">${workout.duration}</span>
+            <span class="workout__unit">min</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">{workout.speed}</span>
+            <span class="workout__unit">min/km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">🦶🏼</span>
+            <span class="workout__value">178</span>
+            <span class="workout__unit">spm</span>
+          </div>
+        </li>
+        `))
+
+
+    };
+
+    renderWorkoutMarker(workout: Running | Cycling) {
+        L.marker(workout.coords).addTo(this.#map)
             .bindPopup(L.popup({
                 maxWidth: 300,
                 minWidth: 100,
                 autoClose: false,
                 closeOnClick: false,
-                className: `running-popup`,
+                className: `${workout.type}-popup`,
             }))
-            .setPopupContent(`Running`)
+            .setPopupContent("workout")
+            // .setPopupContent(workout.distance)
             .openPopup();
-    };
+    }
 }
 
 const app = new App();
