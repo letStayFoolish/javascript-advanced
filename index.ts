@@ -256,3 +256,12 @@ class App {
 }
 
 const app = new App();
+
+/**
+ * More to do:
+ * 1. Ability to Edit workout;
+ * 2. Ability to Delete workout;
+ * 3. Ability to Delete All workouts;
+ * 4. Ability to sort workouts by a certain field (distance);
+ * 5. Re-build Running and Cycling objects coming from local storage;
+ */
