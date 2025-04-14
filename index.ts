@@ -52,7 +52,8 @@ class Running extends Workout {
 class Cycling extends Workout {
     elevationGain: number; // in m
     speed: number; // km/h
-    type: WorkoutType = "cycling"
+    type: WorkoutType = "cycling";
+
 
     constructor(coords: number[], distance: number, duration: number, elevationGain: number) {
         super(coords, distance, duration);
@@ -75,12 +76,15 @@ class App {
     workouts: WorkoutClType[] = [];
     #map;
     #mapEvent;
+    #mapZoomLevel = 13;
+
 
     constructor() {
         this._getPosition(); // we call the method within constructor - because it will be automatically called as we render App. This is needed behaviour at initialization.
         form.addEventListener('submit', this._newWorkout.bind(this));
         inputType.addEventListener('change', this._toggleElevationField)
         // this.workouts = [];
+        containerWorkouts.addEventListener("click", this._moveToActivity.bind(this));
     }
 
     _getPosition() {
@@ -98,7 +102,7 @@ class App {
         const {longitude} = position.coords;
         const coords = [latitude, longitude]
 
-        this.#map = L.map('map').setView(coords, 13); // 'map' id name of element where we gonna store map <div id="map"></div>
+        this.#map = L.map('map').setView(coords, this.#mapZoomLevel); // 'map' id name of element where we gonna store map <div id="map"></div>
 
         L.tileLayer(`https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png`, {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -181,7 +185,7 @@ class App {
             .openPopup();
     }
 
-    _renderWorkoutHtml(workout: Running | Cycling) {
+    _renderWorkoutHtml(workout: WorkoutClType) {
         const html = `
         <li class="workout workout--${workout.type}" data-id="${workout.id}">
           <h2 class="workout__title">${workout.description}</h2>
@@ -207,7 +211,24 @@ class App {
           </div>
         </li>
         `
-        containerWorkouts.insertAdjacentHTML("afterend", html)
+        containerWorkouts.insertAdjacentHTML("afterbegin", html)
+    }
+
+    _moveToActivity(e: any) {
+        const workoutEl = e.target.closest(".workout");
+
+        if (!workoutEl) return;
+
+        const foundWorkout = this.workouts.find(workout => workout.id === workoutEl.dataset.id);
+
+        if (!foundWorkout) return;
+
+        this.#map.setView(foundWorkout.coords, this.#mapZoomLevel, {
+            animate: true,
+            pan: {
+                duration: 1,
+            }
+        });
     }
 }
 
