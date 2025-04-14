@@ -1,5 +1,3 @@
-console.log("Hello world!");
-
 const form = document.querySelector('.form') as HTMLFormElement;
 const containerWorkouts = document.querySelector('.workouts') as HTMLUListElement;
 const inputType = document.querySelector('.form__input--type') as HTMLInputElement;
@@ -8,6 +6,8 @@ const inputDuration = document.querySelector('.form__input--duration') as HTMLIn
 const inputCadence = document.querySelector('.form__input--cadence') as HTMLInputElement;
 const inputElevation = document.querySelector('.form__input--elevation') as HTMLInputElement;
 
+type WorkoutType = "running" | "cycling";
+
 class Workout {
     coords: number[]; // [lat, lnt]
     distance: number; // in km
@@ -15,6 +15,7 @@ class Workout {
     date = new Date();
     id = (Date.now() + "").slice(-10);
     description = "";
+    type?: WorkoutType;
 
     constructor(coords: number[], distance: number, duration: number) {
         this.coords = coords;
@@ -25,22 +26,21 @@ class Workout {
     _setDescription() {
         // prettier-ignore
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-        this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`
+        if (this.type)
+            this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`
     }
 }
 
 class Running extends Workout {
     cadence: number; // in steps/min
-    pace: number;
-    type: "running" | "cycling" = "running"
+    pace: number; // min/km
+    type: WorkoutType = "running"
 
     constructor(coords: number[], distance: number, duration: number, cadence: number) {
         super(coords, distance, duration);
         this.cadence = cadence;
         this.calcPace();
         this._setDescription();
-
     }
 
     calcPace() {
@@ -51,15 +51,14 @@ class Running extends Workout {
 
 class Cycling extends Workout {
     elevationGain: number; // in m
-    speed: number;
-    type: "running" | "cycling" = "cycling"
+    speed: number; // km/h
+    type: WorkoutType = "cycling"
 
     constructor(coords: number[], distance: number, duration: number, elevationGain: number) {
         super(coords, distance, duration);
         this.elevationGain = elevationGain;
         this.calcSpeed();
         this._setDescription();
-
     }
 
     calcSpeed() {
@@ -68,11 +67,12 @@ class Cycling extends Workout {
     }
 }
 
+type WorkoutClType = Workout | Running | Cycling;
+
 //////////////////////////////////////////////////////////////////////////////////////////
 // Application Architecture
-
 class App {
-    workouts: any[] = [];
+    workouts: WorkoutClType[] = [];
     #map;
     #mapEvent;
 
@@ -80,6 +80,7 @@ class App {
         this._getPosition(); // we call the method within constructor - because it will be automatically called as we render App. This is needed behaviour at initialization.
         form.addEventListener('submit', this._newWorkout.bind(this));
         inputType.addEventListener('change', this._toggleElevationField)
+        // this.workouts = [];
     }
 
     _getPosition() {
@@ -93,10 +94,8 @@ class App {
     _loadMap(position: any) {
         console.log(this);
 
-
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-
+        const {latitude} = position.coords;
+        const {longitude} = position.coords;
         const coords = [latitude, longitude]
 
         this.#map = L.map('map').setView(coords, 13); // 'map' id name of element where we gonna store map <div id="map"></div>
@@ -104,7 +103,6 @@ class App {
         L.tileLayer(`https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png`, {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this.#map);
-
 
         this.#map.on("click", this._showForm.bind(this));
     };
@@ -142,7 +140,7 @@ class App {
         const elevationGain = +inputElevation.value;
         const {lat, lng} = this.#mapEvent.latlng
 
-        let workout: Running | Cycling;
+        let workout: WorkoutClType | null = null;
 
         if (type === "running") {
             // check if input fields are valid
@@ -159,6 +157,8 @@ class App {
             workout = new Cycling([lat, lng], distance, duration, elevationGain);
         }
 
+        if (!workout) return;
+
         this.workouts.push(workout);
         this._renderWorkoutMarker(workout);
 
@@ -168,7 +168,7 @@ class App {
     };
 
 
-    _renderWorkoutMarker(workout: Running | Cycling) {
+    _renderWorkoutMarker(workout: WorkoutClType) {
         L.marker(workout.coords).addTo(this.#map)
             .bindPopup(L.popup({
                 maxWidth: 300,
@@ -197,18 +197,17 @@ class App {
           </div>
           <div class="workout__details">
             <span class="workout__icon">⚡️</span>
-            <span class="workout__value">${workout.type === "running" ? workout.pace.toFixed(2) : workout.speed}</span>
+            <span class="workout__value">${workout.type === "running" && workout instanceof Running ? workout.pace.toFixed(2) : (workout as Cycling).speed}</span>
             <span class="workout__unit">${workout.type === "running" ? "min/km" : "km/h"}</span>
           </div>
           <div class="workout__details">
             <span class="workout__icon">${workout.type === "running" ? "🦶🏼" : "⛰"}</span>
-            <span class="workout__value">${workout.type === "running" ? workout.cadence : workout.elevationGain}</span>
+            <span class="workout__value">${workout.type === "running" && workout instanceof Running ? workout.cadence : (workout as Cycling).elevationGain}</span>
             <span class="workout__unit">${workout.type === "running" ? "spm" : "m"}</span>
           </div>
         </li>
         `
         containerWorkouts.insertAdjacentHTML("afterend", html)
-
     }
 }
 
