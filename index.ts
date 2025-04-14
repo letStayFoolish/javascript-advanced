@@ -81,9 +81,10 @@ class App {
 
     constructor() {
         this._getPosition(); // we call the method within constructor - because it will be automatically called as we render App. This is needed behaviour at initialization.
+        this._loadWorkoutsFromStorage();
+
         form.addEventListener('submit', this._newWorkout.bind(this));
         inputType.addEventListener('change', this._toggleElevationField)
-        // this.workouts = [];
         containerWorkouts.addEventListener("click", this._moveToActivity.bind(this));
     }
 
@@ -96,8 +97,6 @@ class App {
     };
 
     _loadMap(position: any) {
-        console.log(this);
-
         const {latitude} = position.coords;
         const {longitude} = position.coords;
         const coords = [latitude, longitude]
@@ -109,7 +108,29 @@ class App {
         }).addTo(this.#map);
 
         this.#map.on("click", this._showForm.bind(this));
+
+        this.workouts?.forEach(workout => {
+            this._renderWorkoutHtml(workout);
+            this._renderWorkoutMarker(workout);
+        });
     };
+
+    _loadWorkoutsFromStorage() {
+        const workoutsStored: WorkoutClType[] = JSON.parse(localStorage.getItem("workouts"));
+
+        if (!workoutsStored) return;
+
+        this.workouts = workoutsStored;
+
+        this.workouts?.forEach(workout => {
+            this._renderWorkoutHtml(workout);
+        });
+    }
+
+    clearLocalStorage() {
+        localStorage.removeItem("workouts");
+        location.reload();
+    }
 
     _showForm(event: any) {
         // Initially clear the form input fields
@@ -165,12 +186,14 @@ class App {
 
         this.workouts.push(workout);
         this._renderWorkoutMarker(workout);
-
         this._renderWorkoutHtml(workout);
-
+        this._storeWorkout();
         this._hideForm();
     };
 
+    _storeWorkout() {
+        localStorage.setItem("workouts", JSON.stringify(this.workouts));
+    };
 
     _renderWorkoutMarker(workout: WorkoutClType) {
         L.marker(workout.coords).addTo(this.#map)
