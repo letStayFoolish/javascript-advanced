@@ -29,3 +29,31 @@ API is piece of software that can be used by another piece of software, in order
 other**; _DOM API, WEB (Online API) API, Geolocation API_.
 
 Most popular **API data format** is JSON data format.
+
+### Fetching data asynchronously - Old Way
+
+```js
+const request = new XMLHttpRequest();
+
+console.log(request);
+
+request.open("GET", "https://public-api-url");
+request.send();
+
+// load event - as soon as data is fetched
+request.addEventListener("load", function () {
+    console.log(this.responseText);
+
+    const data = JSON.parse(this.responseText);
+
+    console.log(data);
+});
+```
+
+### How the WEB works regarding requests and responses
+
+#### DNS: DNS lookup convert domain name to real domain address - IP address
+
+#### TCP/IP socket connection: connection between client and web server (Transmission Connection Protocol / Internet Protocol)
+
+#### HTTP Request: Requesting something (on the client side) from the server: Start Line, HTTP request headers, Request body
