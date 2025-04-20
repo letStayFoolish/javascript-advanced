@@ -52,8 +52,26 @@ request.addEventListener("load", function () {
 
 ### How the WEB works regarding requests and responses
 
-#### DNS: DNS lookup convert domain name to real domain address - IP address
+💻**Client** (e.g. browser) -----------> **WEB Server**🌐 (_request_);
 
-#### TCP/IP socket connection: connection between client and web server (Transmission Connection Protocol / Internet Protocol)
+💻**Client** (e.g. browser) <----------- **WEB Server**🌐 (_response_);
 
-#### HTTP Request: Requesting something (on the client side) from the server: Start Line, HTTP request headers, Request body
+#### 1. DNS lookup: DNS lookup convert domain name to real domain address - IP address
+
+💻**Client** ----> **DNS** (_request_);
+
+💻**Client** <---- **DNS** (_response_);
+
+#### 2. TCP/IP socket connection: connection between client and web server (Transmission Connection Protocol / Internet Protocol). Communication protocols, setting rules how data moves across the internet.
+
+💻**Client** <--------------> **WEB Server**🌐 (_communication_);
+
+#### 3. HTTP Request: Requesting something (on the client side) from the server: Start Line, HTTP request headers, Request body
+
+💻**Client** ---------> **WEB Server**🌐 (_request_);
+
+#### HTTP Response (from web server to client): Start line: HTTP version + status code + status message, HTTP response headers, response body
+
+💻**Client** <--------- **WEB Server**🌐 (_response_);
+
+![section-16-screen-01.png](section-16-screen-01.png)
