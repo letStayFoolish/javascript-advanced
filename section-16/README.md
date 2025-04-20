@@ -30,7 +30,7 @@ other**; _DOM API, WEB (Online API) API, Geolocation API_.
 
 Most popular **API data format** is JSON data format.
 
-### Fetching data asynchronously - Old Way
+### Fetching data asynchronously - Old Way (AJAX)
 
 ```js
 const request = new XMLHttpRequest();
@@ -75,3 +75,38 @@ request.addEventListener("load", function () {
 💻**Client** <--------- **WEB Server**🌐 (_response_);
 
 ![section-16-screen-01.png](section-16-screen-01.png)
+
+## Promises And Using FETCH
+
+### Using `fetch` over AJAX
+
+```js
+const request = await fetch("https://public-api-url"); // GET request
+// console.log(request) // Promise {<pending>};
+
+```
+
+**Promise** is an object that is used as a placeholder for the future result of an asynchronous operation.
+
+Or less formal: **Promise** is a container for an asynchronously delivered value. (Container for the future value.)
+Example: Response from AJAX call.
+
+### Why Promises?
+
+* Using Promises, we don't need to rely on the events and callbacks passed to the asynchronous functions to handle async
+  results.
+* With Promises, we can **chain promises** for a sequence of async operations: **escaping callback hell**.
+
+### The Promise Lifecycle
+
+Promise status:
+PENDING --> Async task --> SETTLED (fulfilled, rejected)
+
+* Pending: **Before** the future value is available;
+* Settled: Asynchronous task **has finished**;
+* Fulfilled: Success! The value is now **available**;
+* Rejected: An **error* happened.
+
+**BUILD PROMISE**
+
+**CONSUME PROMISE**: When we already have a promise. E.g. promise returned from Fetch API.
