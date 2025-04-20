@@ -83,7 +83,6 @@ request.addEventListener("load", function () {
 ```js
 const request = await fetch("https://public-api-url"); // GET request
 // console.log(request) // Promise {<pending>};
-
 ```
 
 **Promise** is an object that is used as a placeholder for the future result of an asynchronous operation.
@@ -110,3 +109,37 @@ PENDING --> Async task --> SETTLED (fulfilled, rejected)
 **BUILD PROMISE**
 
 **CONSUME PROMISE**: When we already have a promise. E.g. promise returned from Fetch API.
+
+### Consuming Promises
+
+```js
+const getCountryDetails = async function () {
+    // handling fulfilled promise:
+    const request = await fetch("public-api-url").then((res) => {
+        console.log(res);
+        return res.json();
+    }).then((data) => console.log(data)); // assuming that promise is fulfilled.
+}
+```
+
+**then()** will always return a Promise, no matter if we pass some data as an argument or not. If we pass data as an
+argument, _data_ should be fulfilled result of the returned Promise.
+
+#### Chaining Promises
+
+```js
+
+const getSomething = async function () {
+    const request = await fetch("some-url")
+        .then(response => response.json())
+        .then(data => {
+            const request2 = data[0].someParam;
+
+            return fetch(`some-url/${request2}`)
+        })
+        .then(response => response.json())
+        .then(data => console.log(data));
+}
+
+getSomething();
+```
