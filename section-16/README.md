@@ -25,8 +25,8 @@ console.log(firstName); // (2)
 
 ### API Application Programming Interface
 
-API is piece of software that can be used by another piece of software, in order to allow **applications to talk to each
-other**; _DOM API, WEB (Online API) API, Geolocation API_.
+API is a piece of software that can be used by another piece of software, in order to allow **applications to talk to each
+other**; _DOM API, WEB API (Online API), Geolocation API_.
 
 Most popular **API data format** is JSON data format.
 
@@ -104,7 +104,7 @@ PENDING --> Async task --> SETTLED (fulfilled, rejected)
 * Pending: **Before** the future value is available;
 * Settled: Asynchronous task **has finished**;
 * Fulfilled: Success! The value is now **available**;
-* Rejected: An **error* happened.
+* Rejected: An **error** happened.
 
 **BUILD PROMISE**
 
