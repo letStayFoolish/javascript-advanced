@@ -104,7 +104,7 @@ PENDING --> Async task --> SETTLED (fulfilled, rejected)
 * Pending: **Before** the future value is available;
 * Settled: Asynchronous task **has finished**;
 * Fulfilled: Success! The value is now **available**;
-* Rejected: An **error** happened.
+  * Rejected: An **error** happened.
 
 **BUILD PROMISE**
 
@@ -142,4 +142,20 @@ const getSomething = async function () {
 }
 
 getSomething();
+```
+### Handling Errors in Promises
+
+Using `catch` at the end of `.then()` block;
+
+```js
+void(async () => {
+  const request = await fetch("url")
+          .then(response => {
+            if(!response) throw new Error(`Error happend ${response.status}`);
+
+            return response.json();
+          })
+          .then(data => console.log(data))
+          .catch(error => console.error(`Error happend: ${error.message}`));
+})();
 ```
