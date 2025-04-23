@@ -5,7 +5,7 @@
 Here is more information about each of the phases you may see in the **Timing** tab:
 
 * **Queueing**: The browser queues requests before connection start and when:
-    * There are higher priority requests. Request priority is determined by factors such as the type of a resource, as
+    * There are higher priority requests. Request priority is determined by factors such as the type of resource, as
       well as its location within the document.
     * There are already six TCP connections open for this origin, which is the limit. (Applies to HTTP/1.0 and HTTP/1.1
       only.)
@@ -19,7 +19,7 @@ Here is more information about each of the phases you may see in the **Timing** 
 * **ServiceWorker Preparation**: The browser is starting up the service worker.
 * **Request to ServiceWorker**: The request is being sent to the service worker.
 * **Waiting (TTFB)**: The browser is waiting for the first byte of a response. TTFB stands for Time To First Byte. This
-  timing includes 1 round trip of latency and the time the server took to prepare the response.
+  timing includes one round trip of latency and the time the server took to prepare the response.
 * **Content Downloaded**: The browser is receiving the response, either directly from the network or from a service
   worker. This value is the total amount of time spent reading the response body. Larger than expected values could
   indicate a slow network, or that the browser is busy performing other work which delays the response from being read.
@@ -48,7 +48,7 @@ Tasks associated with JavaScript impact performance in a couple of ways:
 
 * When a browser downloads a JavaScript file during startup, it queues tasks to parse and compile that JavaScript so it
   can be executed later.
-* At other times during the life of the page, tasks are queued when JavaScript does work such as responfing to
+* At other times during the life of the page, tasks are queued when JavaScript does work such as responding to
   interactions through event handlers, JavaScript-driven animations, and background activity such as analytics
   collection.
 
@@ -59,7 +59,7 @@ Tasks associated with JavaScript impact performance in a couple of ways:
 The _main thread_ is where most tasks run in the browser, and where almost all JavaScript you write is executed.
 JavaScript is **single-thread** language.
 
-The main thread can only process one task at a time. Any task that tajes longer than 50 milliseconds is a _long task_.
+The main thread can only process one task at a time. Any task that takes longer than 50 milliseconds is a _long task_.
 For tasks that exceed 50 milliseconds, the task's total time minus 50 milliseconds is known as the task's _blocking
 period_.
 
@@ -90,12 +90,11 @@ function saveSettings() {
 In this example, `saveSettings()` function that calls five functions, is well-architected. Breaking up work like this
 makes projects easier to navigate and maintain.
 
-A potential problem here, though, is that JavaScript doesn't run each of these functions as separate tasks because they
-are executed within the common `saveSettings()` function. **This means that all five functions will run as one task.**
+A potential problem here, though, is that JavaScript doesn't run each of these functions as separate tasks because they're executed within the common `saveSettings()` function. **This means that all five functions will run as one task.**
 _The work is run as part of one long monolithic task, blocking any visual response until all five functions are
 complete._
 
-In this case, `saveSettings()` is triggered by a user click, and because the beowser isn't able to show a response until
+In this case, `saveSettings()` is triggered by a user click, and because the browser isn't able to show a response until
 the entire function is finished running, the result of this long task is a slow and unresponsive UI, and will be
 measured as a poor **Interaction to Next Paint (INP)**.
 
@@ -108,7 +107,7 @@ To make sure important user-facing tasks and UI responses happen before lower-pr
 thread_ by briefly interrupting your work to give the browser opportunities to run more important tasks.
 
 One method developers have used to break up tasks into smaller ones involves `setTimeout()`. With this technique, you
-pass the function to `setTimeout()`. This postpones execution of the callback into a separate taskm, even if you specify
+pass the function to `setTimeout()`. This postpones execution of the callback into a separate task, even if you specify
 timeout of `0`.
 
 ```js
@@ -134,8 +133,8 @@ such as updating the UI that should execute sooner than if you didn't yield.
 
 Using `setTimeout()` also has drawback when it comes to yielding: when you yield to the main thread by deferring code to
 run in a subsequent task using `setTimeout()`, that task gets added to the _end_ of the queue. If there are other tasks
-waiting, they will run before your deferred code. E.g. if we have five `setTimeout()` with timeout set to `0`, the
-browser will start imposing a minimum 5 milliseconds delay for each `setTimeout()`.
+waiting, they will run before your deferred code. For example, if we have five `setTimeout()` with timeout set to `0`, the
+browser will start imposing a minimum 5-millisecond delay for each `setTimeout()`.
 
 ### A dedicated yielding API: `scheduler.yield()`
 
@@ -171,7 +170,7 @@ The real benefit of `scheduler.yield()` over other yielding approaches, though, 
 prioritized**, which means that if you yield in the middle of a task, the continuation of the current task will run
 **before** any other similar tasks are started.
 
-This avoids code from other task sources from interrupting the order of your code's execution, such as task from
+This avoids code from other task sources from interrupting the order of your code's execution, such as a task from
 third-party scripts.
 ![optimization-screen-04.png](optimization-screen-04.png)
 
