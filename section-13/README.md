@@ -200,7 +200,7 @@ parsing HTML stops while executing JS code.
 
 ### DEFER (head)
 
-With defer, script is downloaded asynchronously, but the executing is defered, and it will wait until paring HTML is
+With defer, script is downloaded asynchronously, but the executing is defered, and it will wait until parsing HTML is
 done.
 Key difference, parsing html is never interrupted, because JS code is always executed at the end of parsing.
 
