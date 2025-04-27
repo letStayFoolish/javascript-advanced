@@ -179,3 +179,34 @@ Also, we can say that Event Loop decides when each callback is executed.
 
 **Microtasks Queue**: Callbacks of Promises have special queue for themselves. Microtasks Queue has **priority** over Callback Queue.
 
+### Building the Promise
+
+We create a new Promise using `Promise` constructor
+
+We pass exactly one argument - executor function (which includes two parameters - `resolve` & `reject`).
+
+```js
+const newPromise = new Promise(function(resolve, reject){
+  // should contain async behavior that we are trying to handle with the promise.
+  // should produce a result value - future value of the promise.
+  // ...some code
+  if(Math.random() > 0.5) {
+    resolve("You win!")
+  } else {
+    reject("You lost")
+  }
+})
+
+newPromise.then(res => console.log(res)).catch(error => console.log(error))
+```
+
+The key situations where manually creating Promises makes sense are:
+1. When working with callback-based APIs that you want to convert to Promises
+2. When you need to handle events that can occur multiple times but you want to resolve only once
+3. When implementing custom async behavior that isn't naturally Promise-based
+4. When adding additional functionality around existing Promise-based operations (like retries or timeouts)
+5. When you need more control over the resolution/rejection timing and conditions
+
+The main principle is: if you're working with operations that are already Promise-based (like `fetch`, `async/await`), you typically don't need to create Promises manually. But when you're working with callbacks, events, or need custom Promise behavior, manual Promise creation is the way to go.
+
+

@@ -39,3 +39,50 @@ Promise.resolve('Resolved promise 1.').then(res => console.log(res)); // #3 Prom
 // });
 
 console.log('==== Test End ===='); // #2 Second execution within the call stack.
+
+const newPromise = new Promise(function (resolve, reject) {
+  // should contain async behavior that we are trying to handle with the promise.
+  // should produce a result value - future value of the promise.
+
+  // sync code
+  console.log('Promise is active ⏳');
+
+  // some async behavior
+  setTimeout(() => {
+    if (Math.random() > 0.5) {
+      resolve('You win!');
+    } else {
+      reject(new Error('You lose!'));
+    }
+  }, 2000);
+});
+
+newPromise.then(res => console.log(res)).catch(error => console.log(error));
+
+// Promisifying traditional callback-based APIs setTimeout
+const wait = function (seconds: number) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+wait(2)
+  .then(() => {
+    console.log('2 sec timer.');
+
+    return wait(1);
+  })
+  .then(() => console.log('1 sec timer.'));
+
+// Promisifying setTimeout for sleep functionality
+const sleep = (ms: number): Promise<void> => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+};
+
+async function rateLimitedOperations() {
+  console.log('Starting sleep fu....');
+  await sleep(1000);
+  console.log('Finished sleep fu....');
+}
+
+void rateLimitedOperations();
