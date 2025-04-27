@@ -160,6 +160,22 @@ void(async () => {
 })();
 ```
 
-## Asynchronous Behind The Sceens: The Event Loop
+## Asynchronous Behind The Scenes: The Event Loop
 
+Runtime in the browser - "Container" which includes all necessary to execute JS code.
+**Engine**: "Hearth" of the runtime.
+
+**Memory Heap**: Where **objects** are stored in memory.
+
+**Call Stack**: Where code is actually executed. Only **ONE** thread of execution. No multitasking!
+
+**WEB APIs**: (DOM, Timers, Fetch API, ...) APIs provided to the engine. Not part of the JavaScript language but browsers.
+
+**Callback Queue**: (click, timer, data) Ready-to-be-executed callback functions (coming from events)
+
+**Event Loop**: Whenever the call stack is empty, Event Loop sends callback(s) from callback queue to Call Stack. Event Loop is an essential piece that makes asynchronous behavior possible in JS. It's the reason why we can have non-blocking model in JavaScript.
+
+Also, we can say that Event Loop decides when each callback is executed.
+
+**Microtasks Queue**: Callbacks of Promises have special queue for themselves. Microtasks Queue has **priority** over Callback Queue.
 
