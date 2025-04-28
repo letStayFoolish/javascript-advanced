@@ -86,3 +86,75 @@ async function rateLimitedOperations() {
 }
 
 void rateLimitedOperations();
+
+// Promisifying callbacks
+
+navigator.geolocation.getCurrentPosition(
+  position => {
+    console.log(position);
+  },
+  error => {
+    console.log(error);
+  }
+);
+
+// This can be written using Promises
+const getLoc = function () {
+  return new Promise(function (resolve, reject) {
+    navigator.geolocation.getCurrentPosition(
+      // position => resolve(position),
+      // error => reject(error)
+      // Or even shorter:
+      resolve,
+      reject
+    );
+  });
+};
+
+getLoc()
+  .then(res => console.log(res))
+  .catch(error => console.log(error));
+
+// Coding #2
+// 2.1
+const imagesContainer = document.querySelector('.images') as HTMLDivElement;
+
+const createImage = function (imgPath: string) {
+  // whenever we Promisifying something, we always first return a new Promise.
+  return new Promise(function (resolve, reject) {
+    const imgEl = document.createElement('img');
+    // setting .src attribute is asynchronous!
+    imgEl.src = imgPath;
+
+    imgEl.addEventListener('load', function () {
+      imagesContainer.appendChild(imgEl);
+      resolve(imgEl);
+    });
+
+    imgEl.addEventListener('error', function () {
+      reject(new Error(`Something went wrong while creating image`));
+    });
+  });
+};
+
+let currentImage: HTMLImageElement | string = '';
+createImage('img/img-1.jpg')
+  .then(img => {
+    currentImage = img as HTMLImageElement;
+
+    return wait(2);
+  })
+  .then(() => {
+    (currentImage as HTMLImageElement).style.display = 'none';
+
+    return createImage('img/img-2.jpg');
+  })
+  .then(img => {
+    currentImage = img as HTMLImageElement;
+
+    return wait(2);
+  })
+  .then(() => {
+    (currentImage as HTMLImageElement).style.display = 'none';
+  })
+  .catch(err => console.error(err));
