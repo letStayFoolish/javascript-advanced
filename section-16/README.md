@@ -183,7 +183,7 @@ Also, we can say that Event Loop decides when each callback is executed.
 
 We create a new Promise using `Promise` constructor
 
-We pass exactly one argument - executor function (which includes two parameters - `resolve` & `reject`).
+We pass exactly one argument - executor functi\on (which includes two parameters - `resolve` & `reject`).
 
 ```js
 const newPromise = new Promise(function(resolve, reject){
@@ -208,5 +208,45 @@ The key situations where manually creating Promises makes sense are:
 5. When you need more control over the resolution/rejection timing and conditions
 
 The main principle is: if you're working with operations that are already Promise-based (like `fetch`, `async/await`), you typically don't need to create Promises manually. But when you're working with callbacks, events, or need custom Promise behavior, manual Promise creation is the way to go.
+
+### Better way to consume Promises `async/away`
+
+```js
+const getSomething = async function () {
+  try {
+  /**
+   fetch will return a Promise;
+   we use `await` keyword to await for result of this promise to be returned;
+   await will stop the code execution at this point of the function until promise is fullfiled;
+   Stopping asynchronius code will not block the main thread, because async behavior happens in the backround;
+   @type {Response}
+   */
+  const response = await fetch("url-to-fetch-requested");
+  
+  // do something with response
+  const data = await response.json();
+  
+  // do something with data
+  console.log(data);
+  
+  return data; // this will be the fulfiled value of the promise returned by the function `getSomething()`;
+  } catch (error: any) {
+    console.error(error);
+    
+    // Reject the Promise returned from the async function
+    throw error;
+  }
+};
+
+
+// Wrong
+// const result = getSomething(); // Promise<pending>
+
+// Mixing async/await with then + catch
+getSomething().then(res => console.log(res)).catch(error => console.error(error)).finally(() => console.log("end.")); // returned data
+
+// Stick just to async/await
+await getSomething();
+```
 
 
