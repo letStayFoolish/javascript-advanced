@@ -247,6 +247,35 @@ getSomething().then(res => console.log(res)).catch(error => console.error(error)
 
 // Stick just to async/await
 await getSomething();
+
+// IIFE
+(async function () {
+  try {
+    const res = await getSomething(); 
+    console.log(`#1. Data: ${res.data}`);
+  } catch (e) {
+    console.error(`#2. Error: ${e.message}`);
+  } finally {
+    console.log("#3. Log");
+  }
+})()
 ```
+
+### Running `Promises` in Parallel
+
+```js
+
+void(async () => {
+  try {
+    const data = await Promise.all([getJSON(`url-${1}`), getJSON(`url-${2}`),getJSON(`url-${3}`)]);
+  } catch (error) {
+    console.error(error.message);
+  }
+})()
+```
+
+If even **one** promise reject, then the whole `promises.all` rejects as well.
+
+Whenever we have a situation in which we need to do multiple asynchronous operations at the same time, and operations that don't depend on one another, we should always run them in **parallel** - use `Promise.all`.
 
 
