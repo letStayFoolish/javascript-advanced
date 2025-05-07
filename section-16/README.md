@@ -276,6 +276,14 @@ void(async () => {
 
 If even **one** promise reject, then the whole `promises.all` rejects as well.
 
-Whenever we have a situation in which we need to do multiple asynchronous operations at the same time, and operations that don't depend on one another, we should always run them in **parallel** - use `Promise.all`.
+Whenever we have a situation in which we need to do multiple asynchronous operations at the same time, and operations that don't depend on one another, we should always run them in **parallel**  - use `Promise.all`.
+
+```js
+Promise.all();
+//
+Promise.race(); // Race - We only get one result....soon as one of the input promisses are settles - the value is available. The first settled promise wins the race.;
+Promise.allSettled();
+Promise.any(); // Rejected promises are ignored. Result will always be fulfilled promise unless all of them reject.
+```
 
 
