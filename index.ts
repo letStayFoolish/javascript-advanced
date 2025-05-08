@@ -138,23 +138,62 @@ const createImage = function (imgPath: string) {
 };
 
 let currentImage: HTMLImageElement | string = '';
-createImage('img/img-1.jpg')
-  .then(img => {
-    currentImage = img as HTMLImageElement;
+// createImage('img/img-1.jpg')
+//   .then(img => {
+//     currentImage = img as HTMLImageElement;
+//
+//     return wait(2);
+//   })
+//   .then(() => {
+//     (currentImage as HTMLImageElement).style.display = 'none';
+//
+//     return createImage('img/img-2.jpg');
+//   })
+//   .then(img => {
+//     currentImage = img as HTMLImageElement;
+//
+//     return wait(2);
+//   })
+//   .then(() => {
+//     (currentImage as HTMLImageElement).style.display = 'none';
+//   })
+//   .catch(err => console.error(err));
 
-    return wait(2);
-  })
-  .then(() => {
-    (currentImage as HTMLImageElement).style.display = 'none';
+// #3 Code Challenge
+// Part 1
+const loadNPause = async function (imgPath: string) {
+  console.log('loadNPause Start...');
+  try {
+    const imgEl = await createImage(imgPath);
+    await wait(2);
 
-    return createImage('img/img-2.jpg');
-  })
-  .then(img => {
-    currentImage = img as HTMLImageElement;
+    (imgEl as HTMLImageElement).style.display = 'none';
+  } catch (error: any) {
+    console.error(error.message);
+    throw error;
+  } finally {
+    console.log('loadNPause End...');
+  }
+};
+// (async function () {
+//   await loadNPause('img/img-1.jpg');
+//   await loadNPause('img/img-2.jpg');
+// })();
+// Part 2
+const loadAll = async function (imgArr: string[]) {
+  try {
+    const imgs = imgArr.map(async img => await createImage(img));
+    const imgsAwaited = await Promise.all(imgs);
 
-    return wait(2);
-  })
-  .then(() => {
-    (currentImage as HTMLImageElement).style.display = 'none';
-  })
-  .catch(err => console.error(err));
+    imgsAwaited.forEach(img =>
+      (img as HTMLImageElement).classList.add('parallel')
+    );
+    console.log(imgsAwaited);
+  } catch (error: any) {
+    console.error(error.message);
+    throw error;
+  }
+};
+
+(async () =>
+  await loadAll(['img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg']))();
