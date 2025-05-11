@@ -23,4 +23,22 @@ Module includes:
 - Module Code
 - Exports - Public API;
 
-Import (dependencies): Because the code that is in the module that is importing can't work without the code that is importing from the external module
+Import (dependencies): Because the code that is in the module that is importing can't work without the code that is importing from the external module.
+
+### Why modules?
+
+- **Compose software**: Modules are small building blocks that we put together to build complex applications;
+- **Isolate components**: Modules can be developed in isolation without thinking about entire application (codebase).
+- **Abstract code**: Implement low-level code in modules and import these abstractions into other modules.
+![screen-01.png](screen-01.png).
+
+Parsing - Reading the code without executing it.
+
+### Importing modules before execution
+
+- Modules are imported **synchronously**;
+- Possible thanks to top-level ("static") imports, which make imports **known before execution**.
+- This makes **bundling** and **dead code elimination** possible.
+
+![screen-02.png](screen-02.png).
+
